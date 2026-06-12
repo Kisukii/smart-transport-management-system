@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Pipeline from "./Pipeline";
-import Leads from "./Leads";
+import MyOrders from "./MyOrders";
 import Analytics from "./Analytics";
 
 function Dashboard() {
@@ -9,8 +9,8 @@ function Dashboard() {
   if (activePage === "pipeline") {
     return <Pipeline goBack={() => setActivePage("dashboard")} />;
   }
-  if (activePage === "leads") {
-    return <Leads goBack={() => setActivePage("dashboard")} />;
+  if (activePage === "orders") {
+    return <MyOrders goBack={() => setActivePage("dashboard")} />;
   }
   if (activePage === "analytics") {
     return <Analytics goBack={() => setActivePage("dashboard")} />;
@@ -21,7 +21,7 @@ function Dashboard() {
 
       {/* Sidebar */}
       <div className="w-64 bg-[#1e293b] p-6">
-        <h1 className="text-3xl font-bold mb-10">LeadForge</h1>
+        <h1 className="text-3xl font-bold mb-10">Vehicle Tracking System</h1>
 
         <ul className="space-y-5 text-lg">
           <li
@@ -40,9 +40,9 @@ function Dashboard() {
 
           <li
             className="cursor-pointer hover:text-cyan-400"
-            onClick={() => setActivePage("leads")}
+            onClick={() => setActivePage("orders")}
           >
-            Leads
+            My Orders
           </li>
 
           <li
@@ -93,10 +93,10 @@ function Dashboard() {
           <div className="flex gap-4">
 
             <button
-              onClick={() => setActivePage("leads")}
+              onClick={() => setActivePage("orders")}
               className="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-xl transition"
             >
-              Go to Leads
+              Go to My Orders
             </button>
 
             <button

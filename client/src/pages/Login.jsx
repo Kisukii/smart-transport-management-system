@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Dashboard from "./Dashboard";
-import Register from "./Register";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -10,53 +8,8 @@ function Login() {
 
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (data.success) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("role", data.role);
-        localStorage.setItem("name", data.name);
-
-        switch (data.role) {
-          case "admin":
-            navigate("/admin");
-            break;
-
-          case "transport_manager":
-            navigate("/manager");
-            break;
-
-          case "driver":
-            navigate("/driver");
-            break;
-
-          case "user":
-            navigate("/user");
-            break;
-
-          default:
-            navigate("/");
-        }
-      } else {
-        setError(data.message || "Invalid email or password");
-      }
-    } catch (err) {
-      console.error(err);
-      setError("Server error. Please try again.");
-    }
+ const handleLogin = () => {
+  navigate("/dashboard");
   };
 
   return (
