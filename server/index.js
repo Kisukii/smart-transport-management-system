@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const driverRoutes = require("./routes/driverRoutes");
 
 const app = express();
 
@@ -8,6 +9,7 @@ app.use(cors({
   origin: "*"
 }));
 app.use(express.json());
+app.use("/drivers", driverRoutes);
 
 /* LOGIN */
 app.post("/login", (req, res) => {
@@ -56,8 +58,8 @@ app.get("/leads", (req, res) => {
   ]);
 });
 
-/* PIPELINE */
-app.get("/pipeline", (req, res) => {
+/* NEWORDER */
+app.get("/neworder", (req, res) => {
   res.json({
     New: ["Tesla", "Spotify"],
     Contacted: ["Amazon"],
@@ -66,8 +68,8 @@ app.get("/pipeline", (req, res) => {
   });
 });
 
-/* ANALYTICS */
-app.get("/analytics", (req, res) => {
+
+app.get("/tracking", (req, res) => {
   res.json({
     revenue: "₹4.2L",
     conversionRate: "32%",
@@ -86,7 +88,7 @@ if (require('fs').existsSync(clientBuildPath)) {
     if (req.method !== 'GET') return next();
 
     // Don't interfere with API routes
-    const apiPrefixes = ['/login', '/leads', '/pipeline', '/analytics'];
+    const apiPrefixes = ['/login', '/leads', '/neworder', '/tracking'];
     if (apiPrefixes.some(p => req.path.startsWith(p))) return next();
 
     // If request has a file extension, let static middleware handle it (404 if not found)
