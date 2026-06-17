@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Register() {
   return (
     <div className="h-screen flex items-center justify-center bg-[#0f172a] text-white">
@@ -27,6 +29,15 @@ function Register() {
         <button className="w-full bg-cyan-500 p-3 rounded-xl">
           Register
         </button>
+
+        <div className="mt-4 text-center">
+          <Link
+            to="/"
+            className="inline-block w-full bg-slate-700 hover:bg-slate-600 text-white p-3 rounded-xl transition"
+          >
+            Back to Login
+          </Link>
+        </div>
       </div>
     </div>
   );

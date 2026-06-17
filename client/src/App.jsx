@@ -8,6 +8,7 @@ import DriverManagement from "./pages/DriverManagement";
 import MyOrders from "./pages/MyOrders";
 import VehicleManagement from "./pages/VehicleManagement";
 
+import AdminDashboard from "./pages/AdminDashboard";
 function App() {
   return (
     <Routes>

@@ -2,32 +2,46 @@ import { useState, useEffect } from "react";
 
 function VehicleManagement({ goBack }) {
   const [stages, setStages] = useState({});
+function VehicleManagement({ goBack }) {
+  const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const load = async () => {
-      setLoading(true);
-      setError("");
+    const loadVehicles = async () => {
       try {
-        const res = await fetch("https://leadforge-x8t8.onrender.com/pipeline");
-        if (!res.ok) throw new Error("Network response was not ok");
-        const data = await res.json();
-        setStages(data || {});
+        setLoading(true);
+
+        // We'll replace this with your backend later
+        setVehicles([
+          {
+            id: 1,
+            vehicleNumber: "KL07AB1234",
+            type: "Bus",
+            capacity: 50,
+            status: "Available",
+          },
+          {
+            id: 2,
+            vehicleNumber: "KL08CD5678",
+            type: "Van",
+            capacity: 15,
+            status: "On Trip",
+          },
+        ]);
       } catch (err) {
-        setError("Failed to load pipeline");
-        setStages({});
+        setError("Failed to load vehicles");
       } finally {
         setLoading(false);
       }
     };
 
-    load();
+    loadVehicles();
   }, []);
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-white p-8">
-      <h1 className="text-4xl font-bold mb-8">Vehicle Management</h1>
+      <h1 className="text-4xl font-bold mb-8">Sales Pipeline</h1>
 
       <button
         onClick={goBack}
@@ -36,31 +50,59 @@ function VehicleManagement({ goBack }) {
         ← Back to Dashboard
       </button>
 
+      <div className="mb-6">
+        <button className="bg-cyan-600 hover:bg-cyan-700 px-5 py-3 rounded-xl">
+          + Add Vehicle
+        </button>
+      </div>
+
       {loading ? (
-        <p>Loading...</p>
+        <p>Loading Vehicles...</p>
       ) : error ? (
         <p className="text-red-400">{error}</p>
       ) : (
-        <div className="grid grid-cols-4 gap-6">
-          {Object.entries(stages || {}).map(([stage, leads]) => (
-            <div key={stage} className="bg-[#1e293b] p-5 rounded-2xl">
-              <h2 className="text-xl font-semibold mb-4">{stage}</h2>
+        <div className="bg-[#1e293b] rounded-2xl overflow-hidden">
 
-              <div className="space-y-3">
-                {Array.isArray(leads)
-                  ? leads.map((lead, index) => (
-                      <div key={index} className="bg-[#334155] p-3 rounded-xl">
-                        {lead}
-                      </div>
-                    ))
-                  : null}
-              </div>
-            </div>
-          ))}
+          <table className="w-full">
+            <thead>
+              <tr className="bg-[#334155]">
+                <th className="p-4 text-left">Vehicle Number</th>
+                <th className="p-4 text-left">Type</th>
+                <th className="p-4 text-left">Capacity</th>
+                <th className="p-4 text-left">Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {vehicles.map((vehicle) => (
+                <tr
+                  key={vehicle.id}
+                  className="border-b border-slate-700"
+                >
+                  <td className="p-4">
+                    {vehicle.vehicleNumber}
+                  </td>
+
+                  <td className="p-4">
+                    {vehicle.type}
+                  </td>
+
+                  <td className="p-4">
+                    {vehicle.capacity}
+                  </td>
+
+                  <td className="p-4">
+                    {vehicle.status}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
         </div>
       )}
     </div>
   );
 }
-
+}
 export default VehicleManagement;
