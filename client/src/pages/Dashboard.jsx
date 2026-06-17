@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Pipeline from "./Pipeline";
+import VehicleManagement from "./VehicleManagement";
 import MyOrders from "./MyOrders";
 import Analytics from "./Analytics";
 
@@ -108,31 +108,7 @@ function Dashboard() {
 
           </div>
 
-          {/* RIGHT - Recent Activity */}
-          <div className="bg-[#1e293b] p-6 rounded-2xl">
-
-            <h2 className="text-xl font-semibold mb-4">
-              Recent Activity
-            </h2>
-
-            <ul className="space-y-3">
-
-              <li className="bg-slate-700 p-3 rounded-lg hover:bg-slate-600 transition">
-                Tesla moved to Contacted
-              </li>
-
-              <li className="bg-slate-700 p-3 rounded-lg hover:bg-slate-600 transition">
-                Amazon moved to Proposal
-              </li>
-
-              <li className="bg-slate-700 p-3 rounded-lg hover:bg-slate-600 transition">
-                New lead added: Spotify
-              </li>
-
-            </ul>
-
-          </div>
-
+          
         </div>
 
       </div>
