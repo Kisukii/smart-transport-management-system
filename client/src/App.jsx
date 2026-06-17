@@ -19,6 +19,7 @@ function App() {
       <Route path="/drivers" element={<DriverManagement />} />
       <Route path="/orders" element={<MyOrders />} />
       <Route path="/vehicles" element={<VehicleManagement />} />
+      <Route path="/admin" element={<AdminDashboard />} />
     </Routes>
   );
 }
