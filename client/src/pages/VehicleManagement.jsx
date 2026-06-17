@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 
 function VehicleManagement({ goBack }) {
-  const [stages, setStages] = useState({});
-function VehicleManagement({ goBack }) {
   const [vehicles, setVehicles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -104,5 +102,5 @@ function VehicleManagement({ goBack }) {
     </div>
   );
 }
-}
+
 export default VehicleManagement;
