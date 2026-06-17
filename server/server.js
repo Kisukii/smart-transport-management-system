@@ -4,12 +4,15 @@ const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const connectDB = require("./config/db");
 const { protect } = require("./middleware/authMiddleware");
+
 dotenv.config();
 
 connectDB();
 
 const app = express();
+const driverRoutes = require("./routes/driverRoutes");
 
+app.use("/drivers", driverRoutes);
 app.use(cors());
 app.use(express.json());
 app.use("/api/auth",authRoutes);
