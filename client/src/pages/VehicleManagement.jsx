@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function Pipeline({ goBack }) {
+function VehicleManagement({ goBack }) {
   const [stages, setStages] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -27,7 +27,7 @@ function Pipeline({ goBack }) {
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-white p-8">
-      <h1 className="text-4xl font-bold mb-8">Sales Pipeline</h1>
+      <h1 className="text-4xl font-bold mb-8">Vehicle Management</h1>
 
       <button
         onClick={goBack}
@@ -63,4 +63,4 @@ function Pipeline({ goBack }) {
   );
 }
 
-export default Pipeline;
+export default VehicleManagement;
