@@ -1,19 +1,28 @@
 import { useState } from "react";
+<<<<<<< HEAD
 import VehicleManagement from "./VehicleManagement";
+=======
+import NewOrder from "./NewOrder";
+>>>>>>> bbf03a885b6c3198ea367f5fdd385bccf4702ec7
 import MyOrders from "./MyOrders";
-import Analytics from "./Analytics";
+import Tracking from "./Tracking";
+import DriverManagement from "./DriverManagement";
 
 function Dashboard() {
   const [activePage, setActivePage] = useState("dashboard");
 
-  if (activePage === "pipeline") {
-    return <Pipeline goBack={() => setActivePage("dashboard")} />;
+  if (activePage === "NewOrder") {
+    return <NewOrder goBack={() => setActivePage("dashboard")} />;
   }
   if (activePage === "orders") {
     return <MyOrders goBack={() => setActivePage("dashboard")} />;
   }
-  if (activePage === "analytics") {
-    return <Analytics goBack={() => setActivePage("dashboard")} />;
+  if (activePage === "tracking") {
+    return <Tracking goBack={() => setActivePage("dashboard")} />;
+  }
+
+  if (activePage === "drivers") {
+  return <DriverManagement goBack={() => setActivePage("dashboard")} />;
   }
 
   return (
@@ -33,9 +42,9 @@ function Dashboard() {
 
           <li
             className="cursor-pointer hover:text-cyan-400"
-            onClick={() => setActivePage("pipeline")}
+            onClick={() => setActivePage("NewOrder")}
           >
-            Pipeline
+            NewOrder
           </li>
 
           <li
@@ -47,9 +56,16 @@ function Dashboard() {
 
           <li
             className="cursor-pointer hover:text-cyan-400"
-            onClick={() => setActivePage("analytics")}
+            onClick={() => setActivePage("tracking")}
           >
-            Analytics
+            Tracking
+          </li>
+
+          <li
+            className="cursor-pointer hover:text-cyan-400"
+            onClick={() => setActivePage("drivers")}
+          >
+          Driver Management
           </li>
 
           <li>Settings</li>
@@ -100,10 +116,10 @@ function Dashboard() {
             </button>
 
             <button
-              onClick={() => setActivePage("pipeline")}
+              onClick={() => setActivePage("NewOrder")}
               className="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-xl transition"
             >
-              View Pipeline
+              View NewOrder
             </button>
 
           </div>
