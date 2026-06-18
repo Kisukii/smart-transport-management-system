@@ -4,7 +4,7 @@ const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const connectDB = require("./config/db");
 const { protect,authorize } = require("./middleware/authMiddleware");
-
+const vehicleRoutes = require("./routes/vehicleRoutes");
 dotenv.config();
 
 connectDB();
@@ -16,6 +16,7 @@ app.use("/drivers", driverRoutes);
 app.use(cors());
 app.use(express.json());
 app.use("/api/auth",authRoutes);
+app.use("/api/vehicles", vehicleRoutes);
 app.get("/",(req,res)=>{
     res.send("Server Running");
 });
