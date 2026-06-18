@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -8,41 +9,41 @@ function Login() {
 
   const navigate = useNavigate();
 
- const handleLogin = async () => {
-  try {
-    setError("");
+  const handleLogin = async () => {
+    try {
+      setError("");
 
-    const res = await axios.post(
-      "http://localhost:5000/api/auth/login",
-      {
-        email,
-        password,
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
+
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", res.data.role);
+
+      if (res.data.role === "admin") {
+        navigate("/admin");
+      } else if (res.data.role === "manager") {
+        navigate("/manager");
+      } else if (res.data.role === "drivers") {
+        navigate("/drivers");
+      } else {
+        navigate("/user");
       }
-    );
 
-    localStorage.setItem("token", res.data.token);
-    localStorage.setItem("role", res.data.role);
-
-    if (res.data.role === "admin") {
-      navigate("/admin");
-    } else if (res.data.role === "manager") {
-      navigate("/manager");
-    } else if (res.data.role === "driver") {
-      navigate("/driver");
-    } else {
-      navigate("/user");
+    } catch (error) {
+      setError(
+        error.response?.data?.message || "Login Failed"
+      );
     }
+  };
 
-  } catch (error) {
-    setError(
-      error.response?.data?.message ||
-      "Login failed"
-    );
-  }
-};
   return (
     <div className="h-screen flex items-center justify-center bg-[#0f172a] text-white">
-      <div className="bg-[#1e293b] p-10 rounded-2xl w-400 shadow-2xl">
+      <div className="bg-[#1e293b] p-10 rounded-2xl w-450px shadow-2xl">
 
         <h1 className="text-3xl font-bold mb-8 text-center">
           Vehicle Management System
@@ -93,10 +94,10 @@ function Login() {
           </div>
 
         </div>
+
       </div>
     </div>
   );
 }
 
 export default Login;
-
