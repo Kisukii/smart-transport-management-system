@@ -1,31 +1,22 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function OrdersManagement() {
+function OrdersManagement({ goBack }) {
   const API = "http://localhost:5000/api/orders";
-  const DRIVER_API = "http://localhost:5000/api/drivers";
 
   const [orders, setOrders] = useState([]);
-  const [drivers, setDrivers] = useState([]);
   const [showForm, setShowForm] = useState(false);
-
   const [editId, setEditId] = useState(null);
   const [error, setError] = useState("");
 
-  const [order, setOrder] = useState({
+  const [newOrder, setNewOrder] = useState({
     customerName: "",
     pickup: "",
-    destination: "",
-    driverId: "",
+    drop: "",
     status: "Pending",
   });
 
-  // LOAD DATA
-  useEffect(() => {
-    loadOrders();
-    loadDrivers();
-  }, []);
-
+  // LOAD ORDERS
   const loadOrders = async () => {
     try {
       const res = await axios.get(API);
@@ -35,59 +26,45 @@ function OrdersManagement() {
     }
   };
 
-  const loadDrivers = async () => {
-    try {
-      const res = await axios.get(DRIVER_API);
-      setDrivers(res.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  useEffect(() => {
+    loadOrders();
+  }, []);
 
   // VALIDATION
-  const validate = () => {
-    if (!order.customerName.trim()) return "Customer name required";
-    if (!order.pickup.trim()) return "Pickup required";
-    if (!order.destination.trim()) return "Destination required";
-    if (!order.driverId) return "Select a driver";
+  const validateOrder = () => {
+    if (!newOrder.customerName.trim()) return "Customer name required";
+    if (!newOrder.pickup.trim()) return "Pickup required";
+    if (!newOrder.drop.trim()) return "Drop required";
     return "";
   };
 
-  // SAVE
+  // SAVE (ADD / UPDATE)
   const handleSave = async () => {
-    const err = validate();
+    const err = validateOrder();
     if (err) return setError(err);
 
     try {
       if (editId) {
-        await axios.put(`${API}/${editId}`, order);
+        await axios.put(`${API}/${editId}`, newOrder);
       } else {
-        await axios.post(API, order);
+        await axios.post(API, newOrder);
       }
 
-      setOrder({
+      setNewOrder({
         customerName: "",
         pickup: "",
-        destination: "",
-        driverId: "",
+        drop: "",
         status: "Pending",
       });
 
-      setEditId(null);
       setShowForm(false);
+      setEditId(null);
       setError("");
       loadOrders();
     } catch (err) {
       console.log(err);
     }
   };
-//back
-  <button
-        onClick={goBack}
-        className="mb-6 bg-slate-700 px-4 py-2 rounded-lg"
-      >
-        ← Back to Dashboard
-      </button>
 
   // DELETE
   const handleDelete = async (id) => {
@@ -100,124 +77,105 @@ function OrdersManagement() {
   };
 
   // EDIT
-  const handleEdit = (o) => {
-    setOrder(o);
-    setEditId(o._id || o.id);
+  const handleEdit = (order) => {
+    setNewOrder(order);
+    setEditId(order._id || order.id);
     setShowForm(true);
   };
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-white p-8">
 
+      <button
+        onClick={goBack}
+        className="mb-6 bg-slate-700 px-4 py-2 rounded"
+      >
+        ← Back
+      </button>
+
       <h1 className="text-4xl font-bold mb-6">Orders Management</h1>
 
+      {/* ADD BUTTON */}
       <button
         onClick={() => {
           setShowForm(true);
           setEditId(null);
-          setOrder({
-            customerName: "",
-            pickup: "",
-            destination: "",
-            driverId: "",
-            status: "Pending",
-          });
         }}
         className="bg-cyan-500 px-4 py-2 rounded mb-6"
       >
-        + Create Order
+        + Add Order
       </button>
 
       {/* FORM */}
       {showForm && (
         <div className="bg-[#1e293b] p-6 rounded mb-6">
 
-          {error && <p className="text-red-400 mb-2">{error}</p>}
+          {error && <p className="text-red-400 mb-3">{error}</p>}
 
           <input
             placeholder="Customer Name"
-            value={order.customerName}
+            className="w-full p-2 mb-2 bg-slate-700"
+            value={newOrder.customerName}
             onChange={(e) =>
-              setOrder({ ...order, customerName: e.target.value })
+              setNewOrder({ ...newOrder, customerName: e.target.value })
             }
-            className="w-full p-2 mb-2 bg-slate-700 rounded"
           />
 
           <input
-            placeholder="Pickup"
-            value={order.pickup}
+            placeholder="Pickup Location"
+            className="w-full p-2 mb-2 bg-slate-700"
+            value={newOrder.pickup}
             onChange={(e) =>
-              setOrder({ ...order, pickup: e.target.value })
+              setNewOrder({ ...newOrder, pickup: e.target.value })
             }
-            className="w-full p-2 mb-2 bg-slate-700 rounded"
           />
 
           <input
-            placeholder="Destination"
-            value={order.destination}
+            placeholder="Drop Location"
+            className="w-full p-2 mb-2 bg-slate-700"
+            value={newOrder.drop}
             onChange={(e) =>
-              setOrder({ ...order, destination: e.target.value })
+              setNewOrder({ ...newOrder, drop: e.target.value })
             }
-            className="w-full p-2 mb-2 bg-slate-700 rounded"
           />
 
-          {/* DRIVER SELECT */}
           <select
-            value={order.driverId}
+            className="w-full p-2 mb-4 bg-slate-700"
+            value={newOrder.status}
             onChange={(e) =>
-              setOrder({ ...order, driverId: e.target.value })
+              setNewOrder({ ...newOrder, status: e.target.value })
             }
-            className="w-full p-2 mb-2 bg-slate-700 rounded"
-          >
-            <option value="">Select Driver</option>
-            {drivers.map((d) => (
-              <option key={d._id || d.id} value={d._id || d.id}>
-                {d.name}
-              </option>
-            ))}
-          </select>
-
-          {/* STATUS */}
-          <select
-            value={order.status}
-            onChange={(e) =>
-              setOrder({ ...order, status: e.target.value })
-            }
-            className="w-full p-2 mb-4 bg-slate-700 rounded"
           >
             <option>Pending</option>
-            <option>In Transit</option>
-            <option>Delivered</option>
+            <option>In Progress</option>
+            <option>Completed</option>
           </select>
 
-          <div className="flex gap-3">
-            <button
-              onClick={handleSave}
-              className="bg-green-500 px-4 py-2 rounded"
-            >
-              Save
-            </button>
+          <button
+            onClick={handleSave}
+            className="bg-green-500 px-4 py-2 mr-2"
+          >
+            Save
+          </button>
 
-            <button
-              onClick={() => setShowForm(false)}
-              className="bg-gray-500 px-4 py-2 rounded"
-            >
-              Cancel
-            </button>
-          </div>
-
+          <button
+            onClick={() => setShowForm(false)}
+            className="bg-gray-500 px-4 py-2"
+          >
+            Cancel
+          </button>
         </div>
       )}
 
       {/* TABLE */}
       <div className="bg-[#1e293b] rounded overflow-hidden">
-
         <table className="w-full">
+
           <thead className="bg-slate-700">
             <tr>
               <th className="p-3">Customer</th>
               <th className="p-3">Pickup</th>
-              <th className="p-3">Destination</th>
+              <th className="p-3">Drop</th>
               <th className="p-3">Status</th>
               <th className="p-3">Action</th>
             </tr>
@@ -225,23 +183,24 @@ function OrdersManagement() {
 
           <tbody>
             {orders.map((o) => (
-              <tr key={o._id || o.id}>
+              <tr key={o._id || o.id} className="border-b border-slate-700">
+
                 <td className="p-3">{o.customerName}</td>
                 <td className="p-3">{o.pickup}</td>
-                <td className="p-3">{o.destination}</td>
+                <td className="p-3">{o.drop}</td>
                 <td className="p-3">{o.status}</td>
 
                 <td className="p-3">
                   <button
                     onClick={() => handleEdit(o)}
-                    className="bg-green-500 px-3 py-1 mr-2 rounded"
+                    className="bg-green-500 px-3 py-1 mr-2"
                   >
                     Edit
                   </button>
 
                   <button
                     onClick={() => handleDelete(o._id || o.id)}
-                    className="bg-red-500 px-3 py-1 rounded"
+                    className="bg-red-500 px-3 py-1"
                   >
                     Delete
                   </button>
@@ -252,7 +211,6 @@ function OrdersManagement() {
           </tbody>
 
         </table>
-
       </div>
 
     </div>
