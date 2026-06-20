@@ -10,9 +10,9 @@ import VehicleManagement from "./pages/VehicleManagement";
 import AdminDashboard from "./pages/AdminDashboard";
 // driver
 import DriverDashboard from "./pages/DriverDashboard";
-import Login from "./pages/DriverLogin";
-import Profile from "./pages/DriverProfile";
-import Notifications from "./pages/DriverNotifications";
+import DriverLogin from "./pages/DriverLogin";
+import DriverProfile from "./pages/DriverProfile";
+import DriverNotifications from "./pages/DriverNotifications";
 import MyDeliveries from "./pages/MyDeliveries";
 import VehicleIssueReport from "./pages/VehicleIssueReport";
 import RouteNavigation from "./pages/RouteNavigation";
