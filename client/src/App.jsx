@@ -30,8 +30,8 @@ function App() {
       <Route path="/orders" element={<MyOrders />} />
       <Route path="/vehicles" element={<VehicleManagement />} />
       <Route path="/admin" element={<AdminDashboard />} />
-      {/* driver */}
-      <Route path="/" element={<DriverLogin />} />
+      {/* driver 
+      <Route path="/" element={<DriverLogin />} />*/}
         <Route path="/driver" element={<DriverDashboard />} />
         <Route path="/profile" element={<DriverProfile />} />
         <Route path="/notifications" element={<DriverNotifications />} />
