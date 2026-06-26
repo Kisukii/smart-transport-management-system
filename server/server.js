@@ -12,9 +12,10 @@ connectDB();
 const app = express();
 const driverRoutes = require("./routes/driverRoutes");
 
-app.use("/drivers", driverRoutes);
 app.use(cors());
 app.use(express.json());
+
+app.use("/api/driver", driverRoutes);
 app.use("/api/auth",authRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.get("/",(req,res)=>{

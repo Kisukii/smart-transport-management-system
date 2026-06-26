@@ -28,8 +28,8 @@ function Login() {
         navigate("/admin");
       } else if (res.data.role === "manager") {
         navigate("/manager");
-      } else if (res.data.role === "drivers") {
-        navigate("/drivers");
+      } else if (res.data.role === "driver") {
+        navigate("/driver");
       } else {
         navigate("/user");
       }
