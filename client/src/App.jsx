@@ -32,19 +32,28 @@ function App() {
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/dashboard" element={<ManagerDashboard />} />
+      <Route path="/manager" element={<ManagerDashboard />} />
       <Route path="/neworder" element={<NewOrder />} />
       <Route path="/tracking" element={<Tracking />} />
       <Route path="/drivers" element={<DriverManagement />} />
       <Route path="/orders" element={<MyOrders />} />
       <Route path="/vehicles" element={<VehicleManagement />} />
       <Route path="/admin" element={<AdminDashboard />} />
+
       {/* driver */}
       <Route path="/driver" element={<DriverLogin />} />
         <Route path="/driverdashboard" element={<DriverDashboard />} />
         <Route path="/driverprofile" element={<DriverProfile />} />
         <Route path="/drivernotifications" element={<DriverNotifications />} />
         <Route path="/driverdeliveries" element={<MyDeliveries />} />
+
+      {/* driver 
+      <Route path="/" element={<DriverLogin />} />*/}
+        <Route path="/driver" element={<DriverDashboard />} />
+        <Route path="/profile" element={<DriverProfile />} />
+        <Route path="/notifications" element={<DriverNotifications />} />
+        <Route path="/deliveries" element={<MyDeliveries />} />
+
         <Route path="/report-issue" element={<VehicleIssueReport />} />
         <Route path="/navigation" element={<RouteNavigation />} />
         <Route path="/vehiclestatus" element={<VehicleStatus />} />
