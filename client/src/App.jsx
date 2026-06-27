@@ -59,7 +59,7 @@ function App() {
         <Route path="/vehiclestatus" element={<VehicleStatus />} />
         <Route path="/driverconfirmation" element={<DeliveryConfirmation />} />
         {/* user */}
-        <Route path="/user-login" element={<UserLogin />} />
+        <Route path="/user" element={<UserLogin />} />
 <Route path="/user/dashboard" element={<UserDashboard />} />
 <Route path="/user/profile" element={<UserProfile />} />
 <Route path="/user/notifications" element={<UserNotifications />} />

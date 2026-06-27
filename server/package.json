@@ -4,10 +4,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-<<<<<<< HEAD
-=======
+
     "dev": "nodemon server.js",
->>>>>>> 187043c6debb11e4e6e699418435996c203bf880
+
     "postinstall": "cd ../client && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
