@@ -8,9 +8,10 @@ import DriverManagement from "./pages/DriverManagement";
 import MyOrders from "./pages/MyOrders";
 import VehicleManagement from "./pages/VehicleManagement";
 import AdminDashboard from "./pages/AdminDashboard";
+import Profile from "./pages/Profile";
 // driver
 import DriverDashboard from "./pages/DriverDashboard";
-import DriverLogin from "./pages/DriverLogin";
+
 import DriverProfile from "./pages/DriverProfile";
 import DriverNotifications from "./pages/DriverNotifications";
 import MyDeliveries from "./pages/MyDeliveries";
@@ -19,7 +20,7 @@ import RouteNavigation from "./pages/RouteNavigation";
 import DeliveryConfirmation from "./pages/DeliveryConfirmation";
 import VehicleStatus from "./pages/VehicleStatus";
 // user
-import UserLogin from "./pages/UserLogin";
+
 import UserDashboard from "./pages/UserDashboard";
 import UserProfile from "./pages/UserProfile";
 import UserNotifications from "./pages/UserNotifications";
@@ -39,10 +40,10 @@ function App() {
       <Route path="/orders" element={<MyOrders />} />
       <Route path="/vehicles" element={<VehicleManagement />} />
       <Route path="/admin" element={<AdminDashboard />} />
+      <Route path="/profile" element={<Profile />} />
 
       {/* driver */}
-      <Route path="/driver" element={<DriverLogin />} />
-        <Route path="/driverdashboard" element={<DriverDashboard />} />
+       <Route path="/driver" element={<DriverDashboard />} />
         <Route path="/driverprofile" element={<DriverProfile />} />
         <Route path="/drivernotifications" element={<DriverNotifications />} />
         <Route path="/driverdeliveries" element={<MyDeliveries />} />
@@ -50,7 +51,7 @@ function App() {
       {/* driver 
       <Route path="/" element={<DriverLogin />} />*/}
         <Route path="/driver" element={<DriverDashboard />} />
-        <Route path="/profile" element={<DriverProfile />} />
+        <Route path="/driver/profile" element={<DriverProfile />} />
         <Route path="/notifications" element={<DriverNotifications />} />
         <Route path="/deliveries" element={<MyDeliveries />} />
 
@@ -59,8 +60,8 @@ function App() {
         <Route path="/vehiclestatus" element={<VehicleStatus />} />
         <Route path="/driverconfirmation" element={<DeliveryConfirmation />} />
         {/* user */}
-        <Route path="/user" element={<UserLogin />} />
-<Route path="/user/dashboard" element={<UserDashboard />} />
+       
+<Route path="/user" element={<UserDashboard />} />
 <Route path="/user/profile" element={<UserProfile />} />
 <Route path="/user/notifications" element={<UserNotifications />} />
 <Route path="/user/track-shipment" element={<TrackShipment />} />

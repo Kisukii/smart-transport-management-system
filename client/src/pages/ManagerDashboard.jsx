@@ -23,6 +23,13 @@ export default function ManagerDashboard() {
 
         <li
           className="cursor-pointer hover:text-cyan-400"
+          onClick={() => navigate("/profile")}
+        >
+          Profile
+        </li>
+
+        <li
+          className="cursor-pointer hover:text-cyan-400"
           onClick={() => navigate("/neworder")}
         >
           New Transport Request

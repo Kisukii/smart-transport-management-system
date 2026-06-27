@@ -5,7 +5,7 @@ const UserLayout = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("userToken");
-    navigate("/user-login");
+    navigate("/");
   };
 
   const linkStyle = ({ isActive }) =>
@@ -21,7 +21,7 @@ const UserLayout = ({ children }) => {
         <h2 className="text-2xl font-bold mb-8">👥 User Panel</h2>
 
         <NavLink to="/user/dashboard" className={linkStyle}>Dashboard</NavLink>
-        <NavLink to="/user/profile" className={linkStyle}>Profile</NavLink>
+        <NavLink to="/profile" className={linkStyle}>Profile</NavLink>
         <NavLink to="/user/notifications" className={linkStyle}>Notifications</NavLink>
         <NavLink to="/user/track-shipment" className={linkStyle}>Track Shipment</NavLink>
         <NavLink to="/user/delivery-confirmation" className={linkStyle}>Delivery Confirmation</NavLink>
