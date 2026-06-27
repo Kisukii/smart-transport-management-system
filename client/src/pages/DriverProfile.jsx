@@ -51,7 +51,7 @@ const DriverProfile = () => {
         </nav>
 
         <button onClick={handleLogout} className="absolute bottom-6 left-6 right-6 text-left bg-red-500/10 text-red-400 hover:bg-red-600 hover:text-white p-3 rounded-xl">
-          🚪 Logout
+           Logout
         </button>
       </aside>
 

@@ -21,17 +21,17 @@ const RouteNavigation = () => {
         <h1 className="text-2xl font-bold mb-10">🚚 Driver Panel</h1>
 
         <nav className="space-y-3">
-          <button onClick={() => navigate("/driverdashboard")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">🏠 Dashboard</button>
-          <button onClick={() => navigate("/driverdeliveries")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">📦 My Deliveries</button>
-          <button className="w-full text-left bg-indigo-600 p-3 rounded-xl">🧭 Route Navigation</button>
-          <button onClick={() => navigate("/vehiclestatus")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">🚗 Vehicle Status</button>
-          <button onClick={() => navigate("/report-issue")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">🛠 Vehicle Issue Report</button>
-          <button onClick={() => navigate("/drivernotifications")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">🔔 Notifications</button>
-          <button onClick={() => navigate("/driverprofile")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">👤 Driver Profile</button>
+          <button onClick={() => navigate("/driverdashboard")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl"> Dashboard</button>
+          <button onClick={() => navigate("/driverdeliveries")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl"> My Deliveries</button>
+          <button className="w-full text-left bg-indigo-600 p-3 rounded-xl"> Route Navigation</button>
+          <button onClick={() => navigate("/vehiclestatus")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl"> Vehicle Status</button>
+          <button onClick={() => navigate("/report-issue")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">Vehicle Issue Report</button>
+          <button onClick={() => navigate("/drivernotifications")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl"> Notifications</button>
+          <button onClick={() => navigate("/driverprofile")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl"> Driver Profile</button>
         </nav>
 
         <button onClick={handleLogout} className="absolute bottom-6 left-6 right-6 text-left bg-red-500/10 text-red-400 hover:bg-red-600 hover:text-white p-3 rounded-xl">
-          🚪 Logout
+           Logout
         </button>
       </aside>
 
