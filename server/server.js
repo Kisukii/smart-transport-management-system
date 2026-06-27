@@ -6,6 +6,9 @@ const authRoutes = require("./routes/authRoutes");
 const vehicleRoutes = require("./routes/vehicleRoutes");
 const driverRoutes = require("./routes/driverRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const customerRoutes = require("./routes/customerRoutes");
+const deliveryRoutes = require("./routes/deliveryRoutes");
+const notificationRoutes = require("./routes/notificationRoutes");
 
 const connectDB = require("./config/db");
 const { protect, authorize } = require("./middleware/authMiddleware");
@@ -18,11 +21,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use("/api/customers", customerRoutes);
+app.use("/api/driver", driverRoutes);
+app.use("/api/auth",authRoutes);
+
 // ROUTES
 app.use("/api/auth", authRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/drivers", driverRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/deliveries", deliveryRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 app.get("/", (req, res) => {
   res.send("Server Running");

@@ -11,7 +11,17 @@ let drivers = [
   },
 ];
 
-// GET ALL DRIVERS
+const {
+  registerDriver,
+  loginDriver,
+  getDriverProfile,
+  updateDriverProfile,
+  getDriverDeliveries,
+  confirmDelivery,
+  reportVehicleIssue,
+  getDriverNotifications,
+} = require("../controllers/driverController");
+
 router.get("/", (req, res) => {
   res.json(drivers);
 });
@@ -41,5 +51,28 @@ router.delete("/:id", (req, res) => {
   drivers = drivers.filter((d) => d.id != req.params.id);
   res.json({ message: "Deleted", drivers });
 });
+
+// driver registration
+router.post("/register", registerDriver);
+
+// driver login
+router.post("/login", loginDriver);
+
+router.get("/profile/:id", getDriverProfile);
+
+// Update driver profile
+router.put("/profile/:id", updateDriverProfile);
+
+// Get assigned deliveries
+router.get("/:id/deliveries", getDriverDeliveries);
+
+// Confirm delivery
+router.put("/deliveries/:deliveryId/confirm", confirmDelivery);
+
+// Report vehicle issue
+router.post("/:id/report-issue", reportVehicleIssue);
+
+// Get notifications
+router.get("/:id/notifications", getDriverNotifications);
 
 module.exports = router;
