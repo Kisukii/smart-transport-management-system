@@ -20,7 +20,7 @@ import RouteNavigation from "./pages/RouteNavigation";
 import DeliveryConfirmation from "./pages/DeliveryConfirmation";
 import VehicleStatus from "./pages/VehicleStatus";
 // user
-
+import CustomerManagement from "./pages/CustomerManagement";
 import UserDashboard from "./pages/UserDashboard";
 import UserProfile from "./pages/UserProfile";
 import UserNotifications from "./pages/UserNotifications";
@@ -41,7 +41,10 @@ function App() {
       <Route path="/vehicles" element={<VehicleManagement />} />
       <Route path="/admin" element={<AdminDashboard />} />
       <Route path="/profile" element={<Profile />} />
-
+<Route
+          path="/customer"
+          element={<CustomerManagement />}
+        />
       {/* driver */}
        <Route path="/driver" element={<DriverDashboard />} />
         <Route path="/driverprofile" element={<DriverProfile />} />
@@ -61,7 +64,7 @@ function App() {
         <Route path="/driverconfirmation" element={<DeliveryConfirmation />} />
         {/* user */}
        
-<Route path="/user" element={<UserDashboard />} />
+<Route path="/customer" element={<UserDashboard />} />
 <Route path="/user/profile" element={<UserProfile />} />
 <Route path="/user/notifications" element={<UserNotifications />} />
 <Route path="/user/track-shipment" element={<TrackShipment />} />

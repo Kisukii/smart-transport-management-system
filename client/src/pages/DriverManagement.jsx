@@ -1,48 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 function DriverManagement({ goBack }) {
-   const [drivers, setDrivers] = useState([
-    {
-      id: 1,
-      name: "Rahul",
-      phone: "9876543210",
-      license: "KL07AB1234",
-      status: "Available",
-    },
-    {
-      id: 2,
-      name: "Anjali",
-      phone: "9123456780",
-      license: "KL08CD5678",
-      status: "Busy",
-    },
-    {
-      id: 3,
-      name: "Arjun",
-      phone: "9988776655",
-      license: "KL13EF9012",
-      status: "On Leave",
-    },
-  ]);
-
-  const [showForm, setShowForm] = useState(false);
-
-  const [newDriver, setNewDriver] = useState({
-    name: "",
-    phone: "",
-    license: "",
-    status: "Available",
-  });
-
-
+  const [drivers, setDrivers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [editId, setEditId] = useState(null);
-  //to delete driver
-  const handleDelete = (id) => {
-  const filtered = drivers.filter((d) => d.id !== id);
-  setDrivers(filtered);
-};
+  useEffect(() => {
+    fetchDrivers();
+  }, []);
+
+  const fetchDrivers = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await axios.get(
+        "http://localhost:5000/api/drivers",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setDrivers(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const filteredDrivers = drivers.filter(
+    (driver) =>
+      driver.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      driver.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-white p-8">
@@ -63,22 +53,35 @@ function DriverManagement({ goBack }) {
 
         <div className="bg-[#1e293b] p-5 rounded-xl">
           <h2>Total Drivers</h2>
-          <p className="text-3xl font-bold mt-2">3</p>
+          <p className="text-3xl font-bold mt-2">
+            {drivers.length}
+          </p>
         </div>
 
         <div className="bg-[#1e293b] p-5 rounded-xl">
-          <h2>Available</h2>
-          <p className="text-3xl font-bold mt-2 text-green-400">1</p>
+          <h2>Registered Drivers</h2>
+          <p className="text-3xl font-bold mt-2 text-green-400">
+            {drivers.length}
+          </p>
         </div>
 
         <div className="bg-[#1e293b] p-5 rounded-xl">
-          <h2>Busy</h2>
-          <p className="text-3xl font-bold mt-2 text-yellow-400">1</p>
+          <h2>Today's Registrations</h2>
+          <p className="text-3xl font-bold mt-2 text-cyan-400">
+            {
+              drivers.filter((driver) => {
+                const today = new Date().toDateString();
+                return (
+                  new Date(driver.createdAt).toDateString() === today
+                );
+              }).length
+            }
+          </p>
         </div>
 
       </div>
 
-      {/* Search + Button */}
+      {/* Search */}
       <div className="flex justify-between mb-6">
 
         <input
@@ -86,118 +89,12 @@ function DriverManagement({ goBack }) {
           placeholder="Search Driver..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="bg-slate-700 rounded-lg px-4 py-2 w-72 outline-none"
+          className="bg-slate-700 rounded-lg px-4 py-2 w-80 outline-none"
         />
-
-        <button
-          onClick={() => setShowForm(true)}
-          className="bg-cyan-500 hover:bg-cyan-600 px-5 py-2 rounded-lg"
-        >
-         + Add Driver
-        </button>
 
       </div>
 
-      {/* ADD DRIVER FORM */}
-    {showForm && (
-      <div className="bg-[#1e293b] p-6 rounded-xl mb-6">
-
-      <h2 className="text-2xl font-bold mb-4">
-      Add New Driver
-     </h2>
-
-    <input
-      type="text"
-      placeholder="Driver Name"
-      value={newDriver.name}
-      onChange={(e) =>
-        setNewDriver({ ...newDriver, name: e.target.value })
-      }
-      className="w-full p-2 mb-3 rounded bg-slate-700"
-    />
-
-    <input
-      type="text"
-      placeholder="Phone Number"
-      value={newDriver.phone}
-      onChange={(e) =>
-        setNewDriver({ ...newDriver, phone: e.target.value })
-      }
-      className="w-full p-2 mb-3 rounded bg-slate-700"
-    />
-
-    <input
-      type="text"
-      placeholder="License Number"
-      value={newDriver.license}
-      onChange={(e) =>
-        setNewDriver({ ...newDriver, license: e.target.value })
-      }
-      className="w-full p-2 mb-3 rounded bg-slate-700"
-    />
-
-    <select
-      value={newDriver.status}
-      onChange={(e) =>
-        setNewDriver({ ...newDriver, status: e.target.value })
-      }
-      className="w-full p-2 mb-4 rounded bg-slate-700"
-    >
-      <option>Available</option>
-      <option>Busy</option>
-      <option>On Leave</option>
-    </select>
-
-    <div className="flex gap-3">
-
-            <button
-              onClick={() => {
-                if (editId !== null) {
-                  // UPDATE DRIVER
-                  const updated = drivers.map((d) =>
-                    d.id === editId ? { ...newDriver, id: editId } : d
-                  );
-                  setDrivers(updated);
-                  setEditId(null);
-                } else {
-                  // ADD DRIVER
-                  setDrivers([
-                    ...drivers,
-                    {
-                      id: drivers.length + 1,
-                      ...newDriver,
-                    },
-                  ]);
-                }
-
-                setNewDriver({
-                  name: "",
-                  phone: "",
-                  license: "",
-                  status: "Available",
-                });
-
-                setShowForm(false);
-              }}
-              className="bg-green-500 px-4 py-2 rounded hover:bg-green-600"
-            >
-              Save Driver
-            </button>
-
-
-      <button
-        onClick={() => setShowForm(false)}
-        className="bg-gray-500 px-4 py-2 rounded hover:bg-gray-600"
-      >
-        Cancel
-      </button>
-
-    </div>
-
-  </div>
-)}
-
-      {/* Driver Table */}
+      {/* Table */}
       <div className="bg-[#1e293b] rounded-xl overflow-hidden">
 
         <table className="w-full">
@@ -206,59 +103,55 @@ function DriverManagement({ goBack }) {
 
             <tr>
               <th className="p-4 text-left">Name</th>
-              <th className="p-4 text-left">Phone</th>
-              <th className="p-4 text-left">License</th>
-              <th className="p-4 text-left">Status</th>
-              <th className="p-4 text-center">Action</th>
+              <th className="p-4 text-left">Email</th>
+              <th className="p-4 text-left">Role</th>
+              <th className="p-4 text-left">Registered On</th>
             </tr>
 
           </thead>
 
           <tbody>
 
-            {drivers
-              .filter((driver) =>
-              driver.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              driver.phone.includes(searchTerm) ||
-              driver.license.toLowerCase().includes(searchTerm.toLowerCase())
-              )
-              .map((driver) => (
+            {filteredDrivers.length > 0 ? (
 
-              <tr key={driver.id} className="border-b border-slate-700">
+              filteredDrivers.map((driver) => (
 
-                <td className="p-4">{driver.name}</td>
+                <tr
+                  key={driver._id}
+                  className="border-b border-slate-700 hover:bg-slate-800"
+                >
+                  <td className="p-4">
+                    {driver.name}
+                  </td>
 
-                <td className="p-4">{driver.phone}</td>
+                  <td className="p-4">
+                    {driver.email}
+                  </td>
 
-                <td className="p-4">{driver.license}</td>
+                  <td className="p-4 capitalize">
+                    {driver.role}
+                  </td>
 
-                <td className="p-4">{driver.status}</td>
+                  <td className="p-4">
+                    {new Date(driver.createdAt).toLocaleDateString()}
+                  </td>
 
-                <td className="p-4 text-center">
+                </tr>
 
-                  <button
-                     onClick={() => {
-                    setNewDriver(driver);
-                    setEditId(driver.id);
-                    setShowForm(true);
-                     }}
-                     className="bg-green-500 px-3 py-1 rounded mr-2 hover:bg-green-600"
-                  >
-                    Edit
-                  </button>
+              ))
 
-                 <button
-                    onClick={() => handleDelete(driver.id)}
-                    className="bg-red-500 px-3 py-1 rounded hover:bg-red-600"
-                  >
-                     Delete
-                </button>
+            ) : (
 
+              <tr>
+                <td
+                  colSpan="4"
+                  className="text-center py-8 text-gray-400"
+                >
+                  No Drivers Found
                 </td>
-
               </tr>
 
-            ))}
+            )}
 
           </tbody>
 

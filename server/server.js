@@ -56,8 +56,8 @@ app.get("/api/driver", protect, authorize("driver"), (req, res) => {
   res.json({ message: "Welcome Driver" });
 });
 
-app.get("/api/user", protect, authorize("user"), (req, res) => {
-  res.json({ message: "Welcome User" });
+app.get("/api/user", protect, authorize("customer"), (req, res) => {
+  res.json({ message: "Welcome Customer" });
 });
 
 const PORT = process.env.PORT || 5000;
