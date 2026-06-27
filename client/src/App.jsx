@@ -23,7 +23,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/dashboard" element={<ManagerDashboard />} />
+      <Route path="/manager" element={<ManagerDashboard />} />
       <Route path="/neworder" element={<NewOrder />} />
       <Route path="/tracking" element={<Tracking />} />
       <Route path="/drivers" element={<DriverManagement />} />
