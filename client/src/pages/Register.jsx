@@ -75,7 +75,7 @@ function Register() {
           <option value="user">User</option>
           <option value="driver">Driver</option>
           <option value="manager">Manager</option>
-          <option value="admin">Admin</option>
+       
         </select>
 
         {error && (

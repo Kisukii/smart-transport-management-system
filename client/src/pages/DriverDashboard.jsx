@@ -26,7 +26,7 @@ const DriverDashboard = () => {
           <button onClick={() => navigate("/navigation")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
              Route Navigation
           </button>
-
+        
           <button onClick={() => navigate("/vehiclestatus")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
              Vehicle Status
           </button>
