@@ -10,7 +10,7 @@ const DriverLogin = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 flex items-center justify-center text-white">
-      <div className="w-[420px] bg-slate-900/90 border border-slate-800 rounded-3xl shadow-2xl p-8">
+      <div className="w-420px bg-slate-900/90 border border-slate-800 rounded-3xl shadow-2xl p-8">
         <h1 className="text-3xl font-bold text-center mb-2">🚚 Driver Login</h1>
         <p className="text-slate-400 text-center mb-8">
           Smart Transport Management System
