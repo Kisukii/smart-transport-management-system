@@ -12,7 +12,7 @@ const DriverDashboard = () => {
     <div className="min-h-screen bg-slate-950 text-white">
       {/* Sidebar */}
       <aside className="fixed left-0 top-0 h-screen w-72 bg-slate-900/95 border-r border-slate-800 p-6">
-        <h1 className="text-2xl font-bold mb-10">🚚 Driver Panel</h1>
+        <h1 className="text-2xl font-bold mb-10"> Driver Panel</h1>
 
         <nav className="space-y-3">
           <button className="w-full text-left bg-indigo-600 p-3 rounded-xl shadow-lg">
@@ -158,7 +158,7 @@ const DriverDashboard = () => {
         </div>
 
         {/* Bottom Section */}
-        <div className="grid grid-cols-2 gap-6 mt-8">
+        {/* <div className="grid grid-cols-2 gap-6 mt-8">
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
             <h3 className="text-2xl font-bold mb-4">Delivery Progress</h3>
             <div className="w-full bg-slate-800 rounded-full h-4">
@@ -172,8 +172,8 @@ const DriverDashboard = () => {
             <p className="text-slate-300">
               New delivery assigned to MG Road, Ernakulam. Please check route details before starting.
             </p>
-          </div>
-        </div>
+          </div> */}
+        {/* {/* </div> */}
       </main>
     </div>
   );

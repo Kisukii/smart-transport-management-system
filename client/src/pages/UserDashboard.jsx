@@ -113,7 +113,7 @@ const UserDashboard = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+      {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
         <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
           <h2 className="text-2xl font-bold mb-4 text-white">Shipment Progress</h2>
 
@@ -132,8 +132,8 @@ const UserDashboard = () => {
             Your shipment has reached the Kochi Distribution Hub and is expected
             to be delivered today.
           </p>
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
     </UserLayout>
   );
 };

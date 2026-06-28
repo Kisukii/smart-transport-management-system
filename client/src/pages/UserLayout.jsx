@@ -18,7 +18,7 @@ const UserLayout = ({ children }) => {
   return (
     <div className="min-h-screen flex bg-slate-950 text-white">
       <aside className="w-64 bg-slate-900 text-white p-6 shadow-xl border-r border-slate-800">
-        <h2 className="text-2xl font-bold mb-8">👥 User Panel</h2>
+        <h2 className="text-2xl font-bold mb-8"> User Panel</h2>
 
         <NavLink to="/user/dashboard" className={linkStyle}>Dashboard</NavLink>
         <NavLink to="/user/profile" className={linkStyle}>Profile</NavLink>
