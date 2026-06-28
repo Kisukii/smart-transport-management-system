@@ -7,11 +7,11 @@ const vehicleRoutes = require("./routes/vehicleRoutes");
 const driverRoutes = require("./routes/driverRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const customerRoutes = require("./routes/customerRoutes");
-const deliveryRoutes = require("./routes/deliveryRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
 
 const connectDB = require("./config/db");
 const { protect, authorize } = require("./middleware/authMiddleware");
+const profileRoutes = require("./routes/profileRoutes");
 
 dotenv.config();
 connectDB();
@@ -20,6 +20,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use("/api/profile", profileRoutes);
 
 app.use("/api/customers", customerRoutes);
 app.use("/api/driver", driverRoutes);
@@ -30,7 +31,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/drivers", driverRoutes);
 app.use("/api/orders", orderRoutes);
-app.use("/api/deliveries", deliveryRoutes);
 app.use("/api/notifications", notificationRoutes);
 
 app.get("/", (req, res) => {
@@ -54,8 +54,8 @@ app.get("/api/driver", protect, authorize("driver"), (req, res) => {
   res.json({ message: "Welcome Driver" });
 });
 
-app.get("/api/user", protect, authorize("user"), (req, res) => {
-  res.json({ message: "Welcome User" });
+app.get("/api/user", protect, authorize("customer"), (req, res) => {
+  res.json({ message: "Welcome Customer" });
 });
 
 const PORT = process.env.PORT || 5000;

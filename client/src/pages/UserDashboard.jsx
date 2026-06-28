@@ -86,28 +86,28 @@ const UserDashboard = () => {
               onClick={() => navigate("/user/track-shipment")}
               className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left"
             >
-              📍 Track Shipment
+               Track Shipment
             </button>
 
             <button
               onClick={() => navigate("/user/delivery-history")}
               className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left"
             >
-              📦 Delivery History
+               Delivery History
             </button>
 
             <button
               onClick={() => navigate("/user/download-receipt")}
               className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left"
             >
-              🧾 Download Receipt
+               Download Receipt
             </button>
 
             <button
-              onClick={() => navigate("/user/notifications")}
+              onClick={() => navigate("/user/order")}
               className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left"
             >
-              🔔 Notifications
+               Notifications
             </button>
           </div>
         </div>

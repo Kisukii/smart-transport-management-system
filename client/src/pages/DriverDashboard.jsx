@@ -26,9 +26,9 @@ const DriverDashboard = () => {
           <button onClick={() => navigate("/navigation")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
              Route Navigation
           </button>
-
+        
           <button onClick={() => navigate("/vehiclestatus")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
-             Vehicle Status
+            Vehicle Status
           </button>
 
           <button onClick={() => navigate("/report-issue")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
@@ -39,7 +39,7 @@ const DriverDashboard = () => {
              Notifications
           </button>
 
-          <button onClick={() => navigate("/driverprofile")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
+          <button onClick={() => navigate("/profile", { state: { from: "/driver" } })} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
              Driver Profile
           </button>
         </nav>
@@ -139,19 +139,19 @@ const DriverDashboard = () => {
 
             <div className="space-y-4">
               <button onClick={() => navigate("/driverdeliveries")} className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left">
-                📦 View Deliveries
+                 View Deliveries
               </button>
 
               <button onClick={() => navigate("/vehiclestatus")} className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left">
-                🚗 Update Vehicle Status
+                 Update Vehicle Status
               </button>
 
               <button onClick={() => navigate("/report-issue")} className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left">
-                🛠 Report Vehicle Issue
+                 Report Vehicle Issue
               </button>
 
               <button onClick={() => navigate("/drivernotifications")} className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left">
-                🔔 Check Notifications
+                 Check Notifications
               </button>
             </div>
           </div>

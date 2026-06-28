@@ -52,6 +52,7 @@ function ManagerDashboard() {
 
         <ul className="space-y-5 text-lg">
 
+
           <li
             className="cursor-pointer hover:text-cyan-400"
             onClick={() => setActivePage("dashboard")}

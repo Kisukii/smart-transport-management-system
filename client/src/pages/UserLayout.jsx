@@ -1,11 +1,12 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
 
 const UserLayout = ({ children }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const logout = () => {
     localStorage.removeItem("userToken");
-    navigate("/user-login");
+    navigate("/");
   };
 
   const linkStyle = ({ isActive }) =>
@@ -20,8 +21,8 @@ const UserLayout = ({ children }) => {
       <aside className="w-64 bg-slate-900 text-white p-6 shadow-xl border-r border-slate-800">
         <h2 className="text-2xl font-bold mb-8">👥 User Panel</h2>
 
-        <NavLink to="/user/dashboard" className={linkStyle}>Dashboard</NavLink>
-        <NavLink to="/user/profile" className={linkStyle}>Profile</NavLink>
+        <NavLink to="/customer" className={linkStyle}>Dashboard</NavLink>
+        <NavLink to="/profile" className={linkStyle} state={{ from: location.pathname }}>Profile</NavLink>
         <NavLink to="/user/notifications" className={linkStyle}>Notifications</NavLink>
         <NavLink to="/user/track-shipment" className={linkStyle}>Track Shipment</NavLink>
         <NavLink to="/user/delivery-confirmation" className={linkStyle}>Delivery Confirmation</NavLink>

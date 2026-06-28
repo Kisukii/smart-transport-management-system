@@ -31,7 +31,7 @@ function Login() {
       } else if (res.data.role === "driver") {
         navigate("/driver");
       } else {
-        navigate("/user");
+        navigate("/customer");
       }
 
     } catch (error) {
