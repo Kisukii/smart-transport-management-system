@@ -18,7 +18,12 @@ function AdminDashboard() {
   // ✅ NEW: fetch drivers from backend
   const loadDrivers = async () => {
     try {
-      const res = await axios.get(API);
+      const token = localStorage.getItem("token");
+      const res = await axios.get(API, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setDrivers(res.data);
     } catch (err) {
       console.log(err);
@@ -78,7 +83,7 @@ function AdminDashboard() {
 
           <li onClick={() => setActivePage("dashboard")}>Dashboard</li>
 
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => navigate("/profile")}>
+          <li className="cursor-pointer hover:text-cyan-400" onClick={() => navigate("/profile", { state: { from: "/admin" } })}>
             Profile
           </li>
 

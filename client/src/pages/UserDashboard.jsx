@@ -104,7 +104,7 @@ const UserDashboard = () => {
             </button>
 
             <button
-              onClick={() => navigate("/user/notifications")}
+              onClick={() => navigate("/user/order")}
               className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left"
             >
                Notifications

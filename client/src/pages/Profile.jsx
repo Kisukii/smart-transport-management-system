@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Profile() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [user, setUser] = useState({});
   const [editUser, setEditUser] = useState({});
   const [loading, setLoading] = useState(true);
@@ -79,6 +80,25 @@ function Profile() {
     setEditing(false);
   };
 
+  const fallbackRoutes = {
+    admin: "/admin",
+    manager: "/manager",
+    driver: "/driver",
+    user: "/customer",
+    customer: "/customer",
+  };
+
+  const handleBack = () => {
+    const from = location.state?.from;
+    if (from) {
+      navigate(from);
+      return;
+    }
+
+    const role = user.role?.toLowerCase();
+    navigate(fallbackRoutes[role] || "/admin");
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
@@ -97,7 +117,7 @@ function Profile() {
     <div className="min-h-screen bg-slate-950 text-white p-8">
 
       <button
-        onClick={() => navigate("/admin")}
+        onClick={handleBack}
         className="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg mb-6"
       >
         ← Back
