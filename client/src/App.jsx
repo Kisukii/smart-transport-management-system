@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ManagerDashboard from "./pages/ManagerDashboard";
 import NewOrder from "./pages/NewOrder";
-import Tracking from "./pages/Tracking";
+import VehicleTracking from "./pages/VehicleTracking";
 import DriverManagement from "./pages/DriverManagement";
 import MyOrders from "./pages/Order";
 import VehicleManagement from "./pages/VehicleManagement";
@@ -35,16 +35,18 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/manager" element={<ManagerDashboard />} />
       <Route path="/neworder" element={<NewOrder />} />
-      <Route path="/tracking" element={<Tracking />} />
+      <Route path="/tracking" element={<VehicleTracking />} />
       <Route path="/drivers" element={<DriverManagement />} />
       <Route path="/orders" element={<MyOrders />} />
       <Route path="/vehicles" element={<VehicleManagement />} />
       <Route path="/admin" element={<AdminDashboard />} />
+
       <Route path="/profile" element={<Profile />} />
 <Route
           path="/customermanagement"
           element={<CustomerManagement />}
         />
+
       {/* driver */}
        <Route path="/driver" element={<DriverDashboard />} />
         <Route path="/driverprofile" element={<DriverProfile />} />
