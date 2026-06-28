@@ -1,169 +1,164 @@
 import { useNavigate } from "react-router-dom";
-
+ 
 const DriverDashboard = () => {
   const navigate = useNavigate();
-
+ 
   const handleLogout = () => {
     localStorage.removeItem("driverToken");
     navigate("/");
   };
-
+ 
   return (
-    
     <div className="min-h-screen bg-slate-950 text-white">
       {/* Sidebar */}
-      <aside className="fixed left-0 top-0 h-screen w-72 bg-slate-900/95 border-r border-slate-800 p-6">
-        <h1 className="text-2xl font-bold mb-10">🚚 Driver Panel</h1>
-
-        <nav className="space-y-3">
-          <button className="w-full text-left bg-indigo-600 p-3 rounded-xl shadow-lg">
-             Dashboard
+      <aside className="fixed left-0 top-0 h-screen w-72 bg-slate-900/95 border-r border-slate-800 p-6 flex flex-col">
+        <h1 className="text-2xl font-bold mb-10 tracking-tight">🚚 Driver Panel</h1>
+ 
+        <nav className="space-y-2">
+          <button className="w-full text-left bg-indigo-600 p-3 rounded-xl shadow-lg shadow-indigo-950/40 font-medium">
+            Dashboard
           </button>
-
-          <button onClick={() => navigate("/driverdeliveries")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
-             My Deliveries
+ 
+          <button onClick={() => navigate("/driverdeliveries")} className="w-full text-left text-slate-300 hover:bg-slate-800 hover:text-white p-3 rounded-xl transition-colors">
+            My Deliveries
           </button>
-
-          <button onClick={() => navigate("/navigation")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
-             Route Navigation
+ 
+          <button onClick={() => navigate("/navigation")} className="w-full text-left text-slate-300 hover:bg-slate-800 hover:text-white p-3 rounded-xl transition-colors">
+            Route Navigation
           </button>
-        
-          <button onClick={() => navigate("/vehiclestatus")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
+ 
+          <button onClick={() => navigate("/vehiclestatus")} className="w-full text-left text-slate-300 hover:bg-slate-800 hover:text-white p-3 rounded-xl transition-colors">
             Vehicle Status
           </button>
-
-          <button onClick={() => navigate("/report-issue")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
-             Vehicle Issue Report
+ 
+          <button onClick={() => navigate("/report-issue")} className="w-full text-left text-slate-300 hover:bg-slate-800 hover:text-white p-3 rounded-xl transition-colors">
+            Vehicle Issue Report
           </button>
-
-          <button onClick={() => navigate("/drivernotifications")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
-             Notifications
+ 
+          <button onClick={() => navigate("/drivernotifications")} className="w-full text-left text-slate-300 hover:bg-slate-800 hover:text-white p-3 rounded-xl transition-colors">
+            Notifications
           </button>
-
-          <button onClick={() => navigate("/profile")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
-             Driver Profile
+ 
+          <button onClick={() => navigate("/driver/profile")} className="w-full text-left text-slate-300 hover:bg-slate-800 hover:text-white p-3 rounded-xl transition-colors">
+            Driver Profile
           </button>
         </nav>
-
+ 
         <button
           onClick={handleLogout}
-          className="absolute bottom-6 left-6 right-6 text-left bg-red-500/10 text-red-400 hover:bg-red-600 hover:text-white p-3 rounded-xl"
+          className="mt-auto text-left bg-red-500/10 text-red-400 hover:bg-red-600 hover:text-white p-3 rounded-xl transition-colors font-medium"
         >
-           Logout
+          Logout
         </button>
       </aside>
-      
-
+ 
       {/* Main */}
-      <main className="ml-72 p-8">
+      <main className="ml-72">
+        <div className="px-6 py-8">
         {/* Header */}
-        {/* <div className="mb-8 bg-gradient-to-r from-indigo-600 to-purple-700 rounded-3xl p-8 shadow-2xl">
-          <h2 className="text-4xl font-bold">Welcome back, Driver </h2> */}
-
-          {/* <p className="text-indigo-100 mt-2">
+        <div className="mb-8 bg-gradient-to-r from-indigo-600 via-indigo-600 to-purple-700 rounded-3xl p-8 shadow-2xl shadow-indigo-950/30 relative overflow-hidden">
+          <div className="absolute -right-10 -top-10 w-48 h-48 bg-white/5 rounded-full blur-2xl" />
+          <h2 className="text-4xl font-bold relative">Welcome back</h2>
+          <p className="text-indigo-100/90 mt-2 relative">
             Manage your deliveries, vehicle status, and route details here.
           </p>
-        </div> */}
-
-        
-
+        </div>
+ 
         {/* Stats */}
         <div className="grid grid-cols-4 gap-6 mb-8">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:scale-105 transition">
-            <p className="text-slate-400">Today’s Deliveries</p>
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:-translate-y-1 hover:border-slate-700 transition">
+            <p className="text-slate-400 text-sm">Today's Deliveries</p>
             <h3 className="text-4xl font-bold mt-3">6</h3>
             <p className="text-green-400 text-sm mt-2">+2 new assigned</p>
           </div>
-
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:scale-105 transition">
-            <p className="text-slate-400">Completed</p>
+ 
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:-translate-y-1 hover:border-slate-700 transition">
+            <p className="text-slate-400 text-sm">Completed</p>
             <h3 className="text-4xl font-bold mt-3 text-green-400">3</h3>
             <p className="text-slate-500 text-sm mt-2">Finished today</p>
           </div>
-
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:scale-105 transition">
-            <p className="text-slate-400">Pending</p>
+ 
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:-translate-y-1 hover:border-slate-700 transition">
+            <p className="text-slate-400 text-sm">Pending</p>
             <h3 className="text-4xl font-bold mt-3 text-yellow-400">3</h3>
             <p className="text-slate-500 text-sm mt-2">Needs action</p>
           </div>
-
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:scale-105 transition">
-            <p className="text-slate-400">Vehicle Status</p>
+ 
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:-translate-y-1 hover:border-slate-700 transition">
+            <p className="text-slate-400 text-sm">Vehicle Status</p>
             <h3 className="text-2xl font-bold mt-3 text-cyan-400">Available</h3>
             <p className="text-slate-500 text-sm mt-2">KL-01-AB-2345</p>
           </div>
         </div>
-
+ 
         {/* Content Grid */}
         <div className="grid grid-cols-3 gap-6">
           {/* Current Delivery */}
           <div className="col-span-2 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-2xl font-bold">Current Delivery</h3>
-              <span className="bg-yellow-500/10 text-yellow-400 px-4 py-2 rounded-full text-sm">
+              <span className="bg-yellow-500/10 text-yellow-400 px-4 py-2 rounded-full text-sm font-medium">
                 In Progress
               </span>
             </div>
-
+ 
             <div className="grid grid-cols-2 gap-5">
               <div className="bg-slate-800 rounded-2xl p-5">
                 <p className="text-slate-400 text-sm">Customer</p>
                 <h4 className="text-lg font-semibold mt-1">Rahul Nair</h4>
               </div>
-
+ 
               <div className="bg-slate-800 rounded-2xl p-5">
                 <p className="text-slate-400 text-sm">Estimated Time</p>
                 <h4 className="text-lg font-semibold mt-1">45 minutes</h4>
               </div>
-
+ 
               <div className="bg-slate-800 rounded-2xl p-5">
                 <p className="text-slate-400 text-sm">Pickup</p>
                 <h4 className="text-lg font-semibold mt-1">Warehouse A, Kochi</h4>
               </div>
-
+ 
               <div className="bg-slate-800 rounded-2xl p-5">
                 <p className="text-slate-400 text-sm">Drop</p>
                 <h4 className="text-lg font-semibold mt-1">MG Road, Ernakulam</h4>
               </div>
             </div>
-
+ 
             <button
               onClick={() => navigate("/navigation")}
-              className="mt-6 bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-xl font-semibold"
+              className="mt-6 bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-xl font-semibold transition-colors"
             >
               View Route Details
             </button>
           </div>
-
+ 
           {/* Quick Actions */}
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
             <h3 className="text-2xl font-bold mb-5">Quick Actions</h3>
-
-            <div className="space-y-4">
-              <button onClick={() => navigate("/driverdeliveries")} className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left">
-                 View Deliveries
+ 
+            <div className="space-y-3">
+              <button onClick={() => navigate("/driverdeliveries")} className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left transition-colors">
+                View Deliveries
               </button>
-
-              <button onClick={() => navigate("/vehiclestatus")} className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left">
-                 Update Vehicle Status
+ 
+              <button onClick={() => navigate("/vehiclestatus")} className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left transition-colors">
+                Update Vehicle Status
               </button>
-
-              <button onClick={() => navigate("/report-issue")} className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left">
-                 Report Vehicle Issue
+ 
+              <button onClick={() => navigate("/report-issue")} className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left transition-colors">
+                Report Vehicle Issue
               </button>
-
-              <button onClick={() => navigate("/drivernotifications")} className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left">
-                 Check Notifications
+ 
+              <button onClick={() => navigate("/drivernotifications")} className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left transition-colors">
+                Check Notifications
               </button>
             </div>
           </div>
         </div>
-</main>
-</div>
-      );
-      }; 
-      
-    
-  
-
+        </div>
+      </main>
+    </div>
+  );
+};
+ 
 export default DriverDashboard;

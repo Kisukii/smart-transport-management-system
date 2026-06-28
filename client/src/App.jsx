@@ -40,7 +40,7 @@ function App() {
       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/admin" element={<AdminDashboard />} />
-      <Route path="/profile" element={<Profile />} />
+      {/* <Route path="/profile" element={<Profile />} /> */}
 
       {/* <Route element={<ManagerLayout />}> */}
         <Route path="/manager" element={<ManagerDashboard />} />
@@ -56,6 +56,7 @@ function App() {
       <Route element={<DriverLayout />}>
         <Route path="/driver" element={<DriverDashboard />} />
         <Route path="/driver/new-orders" element={<NewOrderRequests />} />
+        <Route path="/driver/profile" element={<Profile />} />
         <Route path="/driverdeliveries" element={<MyDeliveries />} />
         <Route path="/navigation" element={<RouteNavigation />} />
         <Route path="/vehiclestatus" element={<VehicleStatus />} />
@@ -66,6 +67,7 @@ function App() {
       <Route element={<UserLayout />}>
         <Route path="/user" element={<UserDashboard />} />
         <Route path="/place-order" element={<PlaceOrder />} />
+        <Route path="/user/profile" element={<Profile />} />
         <Route path="/my-orders" element={<MyOrders />} />
         <Route path="/track-shipment" element={<TrackShipment />} />
         <Route path="/track-shipment/:id" element={<TrackShipment />} />

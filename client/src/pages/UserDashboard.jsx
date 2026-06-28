@@ -1,17 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import UserLayout from "./UserLayout";
+// import UserLayout from "./UserLayout";
 
 const UserDashboard = () => {
   const navigate = useNavigate();
 
   return (
-    <UserLayout>
-      {/* <div className="mb-8 bg-gradient-to-r from-indigo-600 to-purple-700 rounded-3xl p-8 shadow-2xl">
+    <>
+      <div className="mb-8 bg-gradient-to-r from-indigo-600 to-purple-700 rounded-3xl p-8 shadow-2xl">
         <h1 className="text-4xl font-bold text-white">Welcome back, Customer</h1>
         <p className="text-indigo-100 mt-2">
           Track your shipments, view delivery updates, and manage your orders easily.
         </p>
-      </div> */}
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:scale-105 transition">
@@ -134,7 +134,7 @@ const UserDashboard = () => {
           </p>
         </div> */}
       {/* </div> */}
-    </UserLayout>
+    </>
   );
 };
 
