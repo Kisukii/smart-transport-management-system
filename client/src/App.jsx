@@ -42,7 +42,7 @@ function App() {
       <Route path="/admin" element={<AdminDashboard />} />
       <Route path="/profile" element={<Profile />} />
 <Route
-          path="/customer"
+          path="/customermanagement"
           element={<CustomerManagement />}
         />
       {/* driver */}
