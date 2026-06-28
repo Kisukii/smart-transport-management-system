@@ -12,6 +12,7 @@ const notificationRoutes = require("./routes/notificationRoutes");
 
 const connectDB = require("./config/db");
 const { protect, authorize } = require("./middleware/authMiddleware");
+const profileRoutes = require("./routes/profileRoutes");
 
 dotenv.config();
 connectDB();
@@ -20,6 +21,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use("/api/profile", profileRoutes);
 
 app.use("/api/customers", customerRoutes);
 app.use("/api/driver", driverRoutes);
@@ -54,8 +56,8 @@ app.get("/api/driver", protect, authorize("driver"), (req, res) => {
   res.json({ message: "Welcome Driver" });
 });
 
-app.get("/api/user", protect, authorize("user"), (req, res) => {
-  res.json({ message: "Welcome User" });
+app.get("/api/user", protect, authorize("customer"), (req, res) => {
+  res.json({ message: "Welcome Customer" });
 });
 
 const PORT = process.env.PORT || 5000;

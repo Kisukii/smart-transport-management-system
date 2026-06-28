@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-
+<h1 className="text-red-500 text-4xl">TEST MANAGER UPDATED</h1>
 export default function ManagerDashboard() {
   const navigate = useNavigate();
 
@@ -16,9 +16,16 @@ export default function ManagerDashboard() {
 
         <li
           className="cursor-pointer hover:text-cyan-400"
-          onClick={() => navigate("/dashboard")}
+          onClick={() => navigate("/manager")}
         >
           Manager Dashboard
+        </li>
+
+        <li
+          className="cursor-pointer hover:text-cyan-400"
+          onClick={() => navigate("/profile")}
+        >
+          Profile
         </li>
 
         <li
@@ -28,6 +35,19 @@ export default function ManagerDashboard() {
           New Transport Request
         </li>
 
+<li
+  className="cursor-pointer hover:text-cyan-400"
+  onClick={() => navigate("/order-requests")}
+>
+  Order Requests
+</li>
+
+<li
+  className="cursor-pointer hover:text-cyan-400"
+  onClick={() => navigate("/assign-order")}
+>
+  Assign Order
+</li>
         <li
           className="cursor-pointer hover:text-cyan-400"
           onClick={() => navigate("/orders")}

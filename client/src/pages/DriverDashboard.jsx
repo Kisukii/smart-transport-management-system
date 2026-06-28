@@ -9,59 +9,7 @@ const DriverDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      {/* Sidebar */}
-      <aside className="fixed left-0 top-0 h-screen w-72 bg-slate-900/95 border-r border-slate-800 p-6">
-        <h1 className="text-2xl font-bold mb-10"> Driver Panel</h1>
-
-        <nav className="space-y-3">
-          <button className="w-full text-left bg-indigo-600 p-3 rounded-xl shadow-lg">
-             Dashboard
-          </button>
-
-          <button onClick={() => navigate("/driverdeliveries")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
-             My Deliveries
-          </button>
-
-          <button onClick={() => navigate("/navigation")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
-             Route Navigation
-          </button>
-
-          <button onClick={() => navigate("/vehiclestatus")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
-            Vehicle Status
-          </button>
-
-          <button onClick={() => navigate("/report-issue")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
-             Vehicle Issue Report
-          </button>
-
-          <button onClick={() => navigate("/drivernotifications")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
-             Notifications
-          </button>
-
-          <button onClick={() => navigate("/driverprofile")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
-             Driver Profile
-          </button>
-        </nav>
-
-        <button
-          onClick={handleLogout}
-          className="absolute bottom-6 left-6 right-6 text-left bg-red-500/10 text-red-400 hover:bg-red-600 hover:text-white p-3 rounded-xl"
-        >
-           Logout
-        </button>
-      </aside>
-
-      {/* Main */}
-      <main className="ml-72 p-8">
-        {/* Header */}
-        {/* <div className="mb-8 bg-gradient-to-r from-indigo-600 to-purple-700 rounded-3xl p-8 shadow-2xl">
-          <h2 className="text-4xl font-bold">Welcome back, Driver </h2> */}
-
-          {/* <p className="text-indigo-100 mt-2">
-            Manage your deliveries, vehicle status, and route details here.
-          </p>
-        </div> */}
+      <>
 
         
 
@@ -157,25 +105,9 @@ const DriverDashboard = () => {
           </div>
         </div>
 
-        {/* Bottom Section */}
-        {/* <div className="grid grid-cols-2 gap-6 mt-8">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
-            <h3 className="text-2xl font-bold mb-4">Delivery Progress</h3>
-            <div className="w-full bg-slate-800 rounded-full h-4">
-              <div className="bg-indigo-600 h-4 rounded-full w-1/2"></div>
-            </div>
-            <p className="text-slate-400 mt-3">3 out of 6 deliveries completed</p>
-          </div>
-
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
-            <h3 className="text-2xl font-bold mb-4">Recent Alert</h3>
-            <p className="text-slate-300">
-              New delivery assigned to MG Road, Ernakulam. Please check route details before starting.
-            </p>
-          </div> */}
-        {/* {/* </div> */}
-      </main>
-    </div>
+       
+      
+    </>
   );
 };
 

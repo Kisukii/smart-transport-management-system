@@ -1,87 +1,64 @@
+import { useNavigate } from "react-router-dom";
 
-import { useState, useEffect } from "react";
+const MyOrders = () => {
+  const navigate = useNavigate();
 
-function MyOrders({ goBack }) {
-  const [orders, setOrders] = useState([]);
-
-  useEffect(() => {
-    // Temporary dummy data
-    setOrders([
-      {
-        orderId: "ORD001",
-        pickup: "Thrissur",
-        destination: "Kochi",
-        status: "In Transit",
-      },
-      {
-        orderId: "ORD002",
-        pickup: "Palakkad",
-        destination: "Calicut",
-        status: "Delivered",
-      },
-      {
-        orderId: "ORD003",
-        pickup: "Ernakulam",
-        destination: "Trivandrum",
-        status: "Pending",
-      },
-    ]);
-  }, []);
+  const orders = [
+    {
+      id: "ORD001",
+      pickup: "Warehouse A, Kochi",
+      drop: "MG Road, Ernakulam",
+      status: "Pending",
+      driver: "Not assigned",
+    },
+    {
+      id: "ORD002",
+      pickup: "Kakkanad",
+      drop: "Aluva",
+      status: "In Transit",
+      driver: "DRV001",
+    },
+  ];
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white p-8">
-      <h1 className="text-4xl font-bold mb-8">My Orders</h1>
+    <div className="min-h-screen bg-slate-950 text-white">
+      <main className="p-8">
+        <h1 className="text-3xl font-bold mb-8">My Orders</h1>
 
-      <button
-        onClick={goBack}
-        className="mb-6 bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-xl"
-      >
-        ← Back to Dashboard
-      </button>
+        <div className="grid grid-cols-2 gap-6">
+          {orders.map((order) => (
+            <div
+              key={order.id}
+              className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl"
+            >
+              <div className="flex justify-between items-center mb-5">
+                <h2 className="text-xl font-bold">{order.id}</h2>
+                <span className="bg-yellow-500/10 text-yellow-400 px-4 py-2 rounded-full text-sm">
+                  {order.status}
+                </span>
+              </div>
 
-      <div className="bg-[#1e293b] rounded-2xl p-6">
-        <table className="w-full">
-          <thead>
-            <tr className="text-left border-b border-slate-600">
-              <th className="pb-4">Order ID</th>
-              <th>Pickup</th>
-              <th>Destination</th>
-              <th>Status</th>
-            </tr>
-          </thead>
+              <p className="text-slate-400">Pickup</p>
+              <p className="mb-3">{order.pickup}</p>
 
-          <tbody>
-            {orders.map((order, index) => (
-              <tr key={index} className="border-b border-slate-700">
-                <td className="py-4 font-semibold">
-                  {order.orderId}
-                </td>
+              <p className="text-slate-400">Drop</p>
+              <p className="mb-3">{order.drop}</p>
 
-                <td>{order.pickup}</td>
+              <p className="text-slate-400">Driver</p>
+              <p className="mb-5">{order.driver}</p>
 
-                <td>{order.destination}</td>
-
-                <td>
-                  <span
-                    className={`px-3 py-1 rounded-lg text-sm ${
-                      order.status === "Delivered"
-                        ? "bg-green-600"
-                        : order.status === "In Transit"
-                        ? "bg-blue-600"
-                        : "bg-yellow-600"
-                    }`}
-                  >
-                    {order.status}
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+              <button
+                onClick={() => navigate(`/track-shipment/${order.id}`)}
+                className="bg-indigo-600 hover:bg-indigo-700 px-5 py-3 rounded-xl font-semibold"
+              >
+                Track Shipment
+              </button>
+            </div>
+          ))}
+        </div>
+      </main>
     </div>
   );
-}
+};
 
 export default MyOrders;
-

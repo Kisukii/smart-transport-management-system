@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DriverManagement from "./DriverManagement";
 import VehicleManagement from "./VehicleManagement";
 import OrdersManagement from "./OrdersManagement";
+import CustomerManagement from "./CustomerManagement";
 
 function AdminDashboard() {
   const [activePage, setActivePage] = useState("dashboard");
+  const navigate = useNavigate();
 
   // ✅ NEW: driver data state
   const [drivers, setDrivers] = useState([]);
@@ -48,6 +51,9 @@ function AdminDashboard() {
   if (activePage === "vehicles") {
     return <VehicleManagement goBack={() => setActivePage("dashboard")} />;
   }
+   if (activePage === "customer") {
+    return <CustomerManagement goBack={() => setActivePage("dashboard")} />;
+  }
 
   if (activePage === "orders") {
     return <OrdersManagement goBack={() => setActivePage("dashboard")} />;
@@ -72,10 +78,13 @@ function AdminDashboard() {
 
           <li onClick={() => setActivePage("dashboard")}>Dashboard</li>
 
+          <li className="cursor-pointer hover:text-cyan-400" onClick={() => navigate("/profile")}>
+            Profile
+          </li>
+
           <li onClick={() => setActivePage("drivers")}>
             Driver Management
           </li>
-
           <li onClick={() => setActivePage("vehicles")}>
             Vehicle Management
           </li>
@@ -84,7 +93,7 @@ function AdminDashboard() {
             Order Management
           </li>
 
-          <li>User Management</li>
+          <li onClick={() => setActivePage("customer")}>Customer Management</li>
 
           <li onClick={handleLogout} className="text-red-400">
             Logout

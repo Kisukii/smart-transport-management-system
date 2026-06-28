@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-function DriverManagement({ goBack }) {
-  const [drivers, setDrivers] = useState([]);
+function CustomerManagement({ goBack }) {
+  const [customers, setCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetchDrivers();
+    fetchCustomers();
   }, []);
 
-  const fetchDrivers = async () => {
+  const fetchCustomers = async () => {
     try {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "http://localhost:5000/api/drivers",
+        "http://localhost:5000/api/customers",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -22,16 +22,16 @@ function DriverManagement({ goBack }) {
         }
       );
 
-      setDrivers(res.data);
+      setCustomers(res.data);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const filteredDrivers = drivers.filter(
-    (driver) =>
-      driver.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      driver.email.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCustomers = customers.filter(
+    (customer) =>
+      customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      customer.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -45,23 +45,23 @@ function DriverManagement({ goBack }) {
       </button>
 
       <h1 className="text-4xl font-bold mb-8">
-        Driver Management
+        Customer Management
       </h1>
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-6 mb-8">
 
         <div className="bg-[#1e293b] p-5 rounded-xl">
-          <h2>Total Drivers</h2>
+          <h2>Total Customers</h2>
           <p className="text-3xl font-bold mt-2">
-            {drivers.length}
+            {customers.length}
           </p>
         </div>
 
         <div className="bg-[#1e293b] p-5 rounded-xl">
-          <h2>Registered Drivers</h2>
+          <h2>Registered Customers</h2>
           <p className="text-3xl font-bold mt-2 text-green-400">
-            {drivers.length}
+            {customers.length}
           </p>
         </div>
 
@@ -69,10 +69,10 @@ function DriverManagement({ goBack }) {
           <h2>Today's Registrations</h2>
           <p className="text-3xl font-bold mt-2 text-cyan-400">
             {
-              drivers.filter((driver) => {
+              customers.filter((customer) => {
                 const today = new Date().toDateString();
                 return (
-                  new Date(driver.createdAt).toDateString() === today
+                  new Date(customer.createdAt).toDateString() === today
                 );
               }).length
             }
@@ -86,7 +86,7 @@ function DriverManagement({ goBack }) {
 
         <input
           type="text"
-          placeholder="Search Driver..."
+          placeholder="Search Customer..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="bg-slate-700 rounded-lg px-4 py-2 w-80 outline-none"
@@ -112,28 +112,28 @@ function DriverManagement({ goBack }) {
 
           <tbody>
 
-            {filteredDrivers.length > 0 ? (
+            {filteredCustomers.length > 0 ? (
 
-              filteredDrivers.map((driver) => (
+              filteredCustomers.map((customer) => (
 
                 <tr
-                  key={driver._id}
+                  key={customer._id}
                   className="border-b border-slate-700 hover:bg-slate-800"
                 >
                   <td className="p-4">
-                    {driver.name}
+                    {customer.name}
                   </td>
 
                   <td className="p-4">
-                    {driver.email}
+                    {customer.email}
                   </td>
 
                   <td className="p-4 capitalize">
-                    {driver.role}
+                    {customer.role}
                   </td>
 
                   <td className="p-4">
-                    {new Date(driver.createdAt).toLocaleDateString()}
+                    {new Date(customer.createdAt).toLocaleDateString()}
                   </td>
 
                 </tr>
@@ -147,7 +147,7 @@ function DriverManagement({ goBack }) {
                   colSpan="4"
                   className="text-center py-8 text-gray-400"
                 >
-                  No Drivers Found
+                  No Customers Found
                 </td>
               </tr>
 
@@ -163,4 +163,4 @@ function DriverManagement({ goBack }) {
   );
 }
 
-export default DriverManagement;
+export default CustomerManagement;
