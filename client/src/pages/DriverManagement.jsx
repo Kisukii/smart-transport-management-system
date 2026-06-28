@@ -4,6 +4,7 @@ import axios from "axios";
 function DriverManagement({ goBack }) {
   const [drivers, setDrivers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchDrivers();
@@ -24,10 +25,10 @@ function DriverManagement({ goBack }) {
 
       setDrivers(res.data);
     } catch (err) {
-      console.log(err);
-    }
-  };
-
+        console.log(err);
+        setError(err.response?.data?.message || err.message || "Failed to load drivers");
+      }
+    };
   const filteredDrivers = drivers.filter(
     (driver) =>
       driver.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -82,16 +83,19 @@ function DriverManagement({ goBack }) {
       </div>
 
       {/* Search */}
-      <div className="flex justify-between mb-6">
-
-        <input
-          type="text"
-          placeholder="Search Driver..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="bg-slate-700 rounded-lg px-4 py-2 w-80 outline-none"
-        />
-
+      <div className="flex flex-col gap-4 mb-6">
+        <div className="flex justify-between">
+          <input
+            type="text"
+            placeholder="Search Driver..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="bg-slate-700 rounded-lg px-4 py-2 w-80 outline-none"
+          />
+        </div>
+        {error && (
+          <p className="text-red-400">{error}</p>
+        )}
       </div>
 
       {/* Table */}

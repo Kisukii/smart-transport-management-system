@@ -18,7 +18,12 @@ function AdminDashboard() {
   // ✅ NEW: fetch drivers from backend
   const loadDrivers = async () => {
     try {
-      const res = await axios.get(API);
+      const token = localStorage.getItem("token");
+      const res = await axios.get(API, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setDrivers(res.data);
     } catch (err) {
       console.log(err);
