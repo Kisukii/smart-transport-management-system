@@ -39,7 +39,7 @@ const DriverDashboard = () => {
              Notifications
           </button>
 
-          <button onClick={() => navigate("/profile")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
+          <button onClick={() => navigate("/profile", { state: { from: "/driver" } })} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl">
              Driver Profile
           </button>
         </nav>

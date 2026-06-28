@@ -5,7 +5,7 @@ import ManagerDashboard from "./pages/ManagerDashboard";
 import NewOrder from "./pages/NewOrder";
 import Tracking from "./pages/Tracking";
 import DriverManagement from "./pages/DriverManagement";
-import MyOrders from "./pages/MyOrders";
+import MyOrders from "./pages/Order";
 import VehicleManagement from "./pages/VehicleManagement";
 import AdminDashboard from "./pages/AdminDashboard";
 import Profile from "./pages/Profile";

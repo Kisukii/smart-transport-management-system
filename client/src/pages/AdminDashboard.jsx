@@ -78,7 +78,7 @@ function AdminDashboard() {
 
           <li onClick={() => setActivePage("dashboard")}>Dashboard</li>
 
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => navigate("/profile")}>
+          <li className="cursor-pointer hover:text-cyan-400" onClick={() => navigate("/profile", { state: { from: "/admin" } })}>
             Profile
           </li>
 

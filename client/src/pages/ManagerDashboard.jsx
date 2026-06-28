@@ -16,14 +16,14 @@ export default function ManagerDashboard() {
 
         <li
           className="cursor-pointer hover:text-cyan-400"
-          onClick={() => navigate("/dashboard")}
+          onClick={() => navigate("/manager")}
         >
           Manager Dashboard
         </li>
 
         <li
           className="cursor-pointer hover:text-cyan-400"
-          onClick={() => navigate("/profile")}
+          onClick={() => navigate("/profile", { state: { from: "/manager" } })}
         >
           Profile
         </li>
