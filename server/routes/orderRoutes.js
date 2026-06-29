@@ -9,6 +9,11 @@ const {
   getMyOrders,
   getOrderById,
   getDriverOrders,
+  getMyDeliveries,
+  acceptOrder,
+  rejectOrder,
+  updateOrderStatus,
+  getDashboardData,
 } = require("../controllers/orderController");
 
 // Create Order
@@ -27,7 +32,7 @@ router.get(
   getMyOrders
 );
 
-// Driver Orders
+// Driver assigned orders
 router.get(
   "/driver",
   protect,
@@ -35,7 +40,44 @@ router.get(
   getDriverOrders
 );
 
-// All Orders
+// Driver deliveries
+router.get(
+  "/driver/deliveries",
+  protect,
+  authorize("driver"),
+  getMyDeliveries
+);
+
+// Accept order
+router.put(
+  "/:id/accept",
+  protect,
+  authorize("driver"),
+  acceptOrder
+);
+
+// Reject order
+router.put(
+  "/:id/reject",
+  protect,
+  authorize("driver"),
+  rejectOrder
+);
+router.get(
+  "/dashboard",
+  protect,
+  authorize("user"),
+  getDashboardData
+);
+// Update status
+router.put(
+  "/:id/status",
+  protect,
+  authorize("driver"),
+  updateOrderStatus
+);
+
+// All orders
 router.get(
   "/",
   protect,
@@ -43,7 +85,7 @@ router.get(
   getOrders
 );
 
-// Order By ID (KEEP THIS LAST)
+// Keep LAST
 router.get(
   "/:id",
   protect,
