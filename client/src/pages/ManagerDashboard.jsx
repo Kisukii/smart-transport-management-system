@@ -1,143 +1,128 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import DriverManagement from "./DriverManagement";
-import VehicleManagement from "./VehicleManagement";
-import OrdersManagement from "./OrdersManagement";
-import VehicleTracking from "./VehicleTracking";
-import NewOrder from "./NewOrder";
-import ReportsAnalytics from "./ReportsAnalytics";
 
 export default function ManagerDashboard() {
   const navigate = useNavigate();
-  const [activePage, setActivePage] = useState("dashboard");
-
-  if (activePage === "drivers") return <DriverManagement goBack={() => setActivePage("dashboard")} />;
-  if (activePage === "vehicles") return <VehicleManagement goBack={() => setActivePage("dashboard")} />;
-  if (activePage === "orders") return <OrdersManagement goBack={() => setActivePage("dashboard")} />;
-  if (activePage === "tracking") return <VehicleTracking goBack={() => setActivePage("dashboard")} />;
-  if (activePage === "neworder") return <NewOrder goBack={() => setActivePage("dashboard")} />;
-  if (activePage === "reports") return <ReportsAnalytics goBack={() => setActivePage("dashboard")} />;
-
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("role");
+    localStorage.removeItem("user");
     navigate("/");
   };
 
   return (
-    <div className="flex h-screen bg-[#0f172a] text-white">
-      <div className="w-64 bg-[#1e293b] p-6">
-        <h1 className="text-2xl font-bold mb-10">🚛 Transport Manager Panel</h1>
+    <>
+      <div className="mb-8 bg-gradient-to-r from-indigo-600 to-purple-700 rounded-3xl p-8 shadow-2xl flex items-start justify-between">
+        <div>
+          <h1 className="text-4xl font-bold text-white">👨‍💼 Manager Dashboard</h1>
 
-        <ul className="space-y-5 text-lg">
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => setActivePage("dashboard")}>
-            Dashboard
-          </li>
+          <p className="text-cyan-100 mt-2">
+            Monitor shipments, assign drivers, manage vehicles and oversee
+            transport operations.
+          </p>
+        </div>
 
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => setActivePage("neworder")}>
-            New Transport Request
-          </li>
-
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => navigate("/order-requests")}>
-            Order Requests
-          </li>
-
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => navigate("/assign-order/ORD001")}>
-            Assign Order
-          </li>
-
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => setActivePage("orders")}>
-            All Shipments
-          </li>
-
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => setActivePage("tracking")}>
-            Vehicle Tracking
-          </li>
-
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => setActivePage("vehicles")}>
-            Fleet Management
-          </li>
-
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => setActivePage("drivers")}>
-            Driver Management
-          </li>
-
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => setActivePage("reports")}>
-            Reports & Analytics
-          </li>
-
-          <li className="cursor-pointer hover:text-cyan-400">Settings</li>
-
-          <li onClick={handleLogout} className="cursor-pointer text-red-400 hover:text-red-300">
+        <div>
+          <button
+            onClick={handleLogout}
+            className="bg-white text-indigo-700 font-semibold px-4 py-2 rounded-2xl shadow hover:opacity-90"
+          >
             Logout
-          </li>
-        </ul>
-      </div>
-
-      <div className="flex-1 p-8">
-        <h1 className="text-4xl font-bold mb-8">👨‍💼 Manager Dashboard</h1>
-
-        <div className="grid grid-cols-4 gap-5">
-          <div className="bg-[#1e293b] p-5 rounded-2xl hover:scale-105 transition">
-            <h2>Total Shipments</h2>
-            <p className="text-3xl font-bold mt-2">128</p>
-          </div>
-
-          <div className="bg-[#1e293b] p-5 rounded-2xl hover:scale-105 transition">
-            <h2>Active Vehicles</h2>
-            <p className="text-3xl font-bold mt-2">42</p>
-          </div>
-
-          <div className="bg-[#1e293b] p-5 rounded-2xl hover:scale-105 transition">
-            <h2>Active Drivers</h2>
-            <p className="text-3xl font-bold mt-2">18</p>
-          </div>
-
-          <div className="bg-[#1e293b] p-5 rounded-2xl hover:scale-105 transition">
-            <h2>Pending Requests</h2>
-            <p className="text-3xl font-bold mt-2">7</p>
-          </div>
-        </div>
-
-        <div className="mt-10">
-          <h2 className="text-2xl font-semibold mb-5">Quick Actions</h2>
-
-          <div className="flex flex-wrap gap-4">
-            <button onClick={() => setActivePage("neworder")} className="bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded-xl">
-              ➕ New Request
-            </button>
-
-            <button onClick={() => navigate("/order-requests")} className="bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded-xl">
-              Order Requests
-            </button>
-
-            <button onClick={() => navigate("/assign-order/ORD001")} className="bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded-xl">
-              Assign Order
-            </button>
-
-            <button onClick={() => setActivePage("orders")} className="bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded-xl">
-              📦 View Shipments
-            </button>
-
-            <button onClick={() => setActivePage("drivers")} className="bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded-xl">
-              👨‍✈️ Driver Management
-            </button>
-
-            <button onClick={() => setActivePage("reports")} className="bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded-xl">
-              📊 Reports
-            </button>
-
-            <button onClick={() => setActivePage("vehicles")} className="bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded-xl">
-              🚚 Fleet Management
-            </button>
-
-            <button onClick={() => setActivePage("tracking")} className="bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded-xl">
-              📍 Vehicle Tracking
-            </button>
-          </div>
+          </button>
         </div>
       </div>
-    </div>
+
+      {/* Dashboard Cards */}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+
+        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:scale-105 transition">
+          <p className="text-slate-400">Total Shipments</p>
+          <h2 className="text-4xl font-bold mt-3">128</h2>
+        </div>
+
+        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:scale-105 transition">
+          <p className="text-slate-400">Active Vehicles</p>
+          <h2 className="text-4xl font-bold mt-3 text-green-400">42</h2>
+        </div>
+
+        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:scale-105 transition">
+          <p className="text-slate-400">Active Drivers</p>
+          <h2 className="text-4xl font-bold mt-3 text-cyan-400">18</h2>
+        </div>
+
+        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:scale-105 transition">
+          <p className="text-slate-400">Pending Requests</p>
+          <h2 className="text-4xl font-bold mt-3 text-yellow-400">7</h2>
+        </div>
+
+      </div>
+
+      {/* Quick Actions */}
+
+      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+        <h2 className="text-2xl font-bold mb-6">
+          Quick Actions
+        </h2>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+
+          <button
+            onClick={() => navigate("/manager/new-order")}
+            className=" bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl"
+          >
+            ➕ New Request
+          </button>
+
+          <button
+            onClick={() => navigate("/manager/order-requests")}
+            className=" bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl"
+          >
+            Order Requests
+          </button>
+
+          <button
+            onClick={() => navigate("/manager/assign-order")}
+            className=" bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl"
+          >
+            Assign Order
+          </button>
+
+          <button
+            onClick={() => navigate("/manager/orders")}
+            className= "bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl"
+          >
+            📦 View Shipments
+          </button>
+
+          <button
+            onClick={() => navigate("/manager/drivers")}
+            className=" bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl"
+          >
+            👨‍✈️ Driver Management
+          </button>
+
+          <button
+            onClick={() => navigate("/manager/vehicles")}
+            className=" bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl"
+          >
+            🚚 Vehicle Management
+          </button>
+
+          <button
+            onClick={() => navigate("/manager/tracking")}
+            className=" bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl"
+          >
+            📍 Vehicle Tracking
+          </button>
+
+          <button
+            onClick={() => navigate("/manager/reports")}
+            className=" bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl"
+          >
+            📊 Reports
+          </button>
+
+        </div>
+      </div>
+    </>
   );
 }

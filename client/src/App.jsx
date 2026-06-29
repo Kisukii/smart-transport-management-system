@@ -6,6 +6,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Profile from "./pages/Profile";
 
 import ManagerDashboard from "./pages/ManagerDashboard";
+import ManagerLayout from "./pages/ManagerLayout";
 import OrderRequests from "./pages/OrderRequests";
 import AssignOrder from "./pages/AssignOrder";
 import DriverManagement from "./pages/DriverManagement";
@@ -29,10 +30,12 @@ import DeliveryHistory from "./pages/DeliveryHistory";
 import DownloadReceipt from "./pages/DownloadReceipt";
 import PlaceOrder from "./pages/PlaceOrder";
 import TrackShipment from "./pages/TrackShipment";
-import MyRequests from "./pages/MyRequests.";
+import MyRequests from "./pages/MyRequests";
 import DriverLayout from "./pages/DriverLayout";
 import UserLayout from "./pages/UserLayout";
 // import ManagerLayout from "./pages/ManagerLayout";
+import OrdersManagement from "./pages/OrdersManagement";
+import ReportsAnalytics from "./pages/ReportsAnalytics";
 
 function App() {
   return (
@@ -42,16 +45,18 @@ function App() {
       <Route path="/admin" element={<AdminDashboard />} />
      <Route path="/profile" element={<Profile />} /> 
 
-      {/* <Route element={<ManagerLayout />}> */}
-        <Route path="/manager" element={<ManagerDashboard />} />
-        <Route path="/neworder" element={<NewOrder />} />
-        <Route path="/order-requests" element={<OrderRequests />} />
-        <Route path="/assign-order/ORD001" element={<AssignOrder />} />
-        <Route path="/drivers" element={<DriverManagement />} />
-        <Route path="/vehicles" element={<VehicleManagement />} />
-        <Route path="/tracking" element={<VehicleTracking />} />
-        <Route path="/orders" element={<MyOrders />} />
-      {/* </Route> */}
+      <Route path="/manager" element={<ManagerLayout />}>
+        <Route index element={<ManagerDashboard />} />
+
+        <Route path="new-order" element={<NewOrder />} />
+        <Route path="order-requests" element={<OrderRequests />} />
+        <Route path="assign-order" element={<AssignOrder />} />
+        <Route path="orders" element={<OrdersManagement />} />
+        <Route path="vehicles" element={<VehicleManagement />} />
+        <Route path="tracking" element={<VehicleTracking />} />
+        <Route path="drivers" element={<DriverManagement />} />
+        <Route path="reports" element={<ReportsAnalytics />} />
+      </Route>
 
 
         <Route path="/driver" element={<DriverLayout />} />
