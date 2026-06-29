@@ -82,10 +82,15 @@ const loginUser = async (req, res) => {
     });
 
   } catch (error) {
-    res.status(500).json({
-      message: error.message
+    console.log("REGISTER ERROR");
+    console.log(error);
+    console.log(error.message);
+    console.log(error.stack);
+
+    return res.status(500).json({
+        message: error.message,
     });
-  }
+}
 };
 
 

@@ -1,31 +1,61 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const PlaceOrder = () => {
   const navigate = useNavigate();
-
   const [form, setForm] = useState({
     pickupLocation: "",
     dropLocation: "",
+    packageType: "Documents",
     packageDetails: "",
     receiverName: "",
     receiverPhone: "",
+    paymentMethod: "Cash",
   });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-  console.log("Order placed:", form);
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post(
+        "http://localhost:5000/api/orderrequests",
+        {
+          customerName: form.receiverName,
+          phone: form.receiverPhone,
+          customerPhone: form.receiverPhone,
+          pickupLocation: form.pickupLocation,
+          dropLocation: form.dropLocation,
+          instructions: form.packageDetails,
+          packageType: form.packageType,
+          paymentMethod: form.paymentMethod,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-  // later your teammate can add:
-  // await axios.post("http://localhost:5000/api/orders", form);
+      navigate("/my-requests");
+    } catch (err) {
+  console.log(err.response.data);
+  console.log(err.response.status);
 
-  navigate("/my-orders");
-};
+  setError(err.response?.data?.message || err.message);
+}finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
@@ -72,20 +102,37 @@ const PlaceOrder = () => {
               className="bg-slate-800 border border-slate-700 rounded-xl p-3 outline-none focus:border-indigo-500"
               required
             />
+
+            <select
+              name="packageType"
+              value={form.packageType}
+              onChange={handleChange}
+              className="bg-slate-800 border border-slate-700 rounded-xl p-3 outline-none focus:border-indigo-500"
+            >
+              <option value="Documents">Documents</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Clothing">Clothing</option>
+              <option value="Food">Food</option>
+              <option value="Furniture">Furniture</option>
+            </select>
           </div>
 
           <textarea
             name="packageDetails"
             value={form.packageDetails}
             onChange={handleChange}
-            placeholder="Package Details"
+            placeholder="Package Details (optional)"
             className="w-full mt-6 bg-slate-800 border border-slate-700 rounded-xl p-3 outline-none focus:border-indigo-500"
             rows="4"
-            required
           />
 
-          <button className="mt-6 bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-xl font-semibold">
-            Submit Order
+          {error && <p className="text-red-400 mb-4">{error}</p>}
+          <button
+            type="submit"
+            disabled={loading}
+            className="mt-6 bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-xl font-semibold disabled:opacity-50"
+          >
+            {loading ? "Placing order..." : "Submit Order"}
           </button>
         </form>
       </main>

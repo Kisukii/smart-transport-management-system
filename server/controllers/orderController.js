@@ -1,12 +1,14 @@
 const Order = require("../models/orderModel");
 const User = require("../models/User");
-const Vehicle = require("../models/vehicle");
-// Customer places an order
-const createOrder = async (req, res) => {
+const Vehicle = require("../models/Vehicle");
+
+const createOrder = async (req, res) => {console.log(req.user);
   try {
     const {
       customerName,
       phone,
+      customerPhone,
+      receiverPhone,
       pickupLocation,
       dropLocation,
       pickupDate,
@@ -19,9 +21,9 @@ const createOrder = async (req, res) => {
     } = req.body;
 
     const order = await Order.create({
-      customer: req.user._id,
+      customer: req.user.id,
       customerName,
-      phone,
+      phone: phone || customerPhone || receiverPhone,
       pickupLocation,
       dropLocation,
       pickupDate,
@@ -42,13 +44,12 @@ const createOrder = async (req, res) => {
   }
 };
 
-// Manager - Get all orders
 const getOrders = async (req, res) => {
   try {
     const orders = await Order.find()
-      .populate("customer", "name email")
-      .populate("driver", "name")
-      .populate("vehicle");
+      .populate("user", "name email driverId")
+      .populate("driver", "name driverId")
+      .populate("vehicle", "vehicleId registrationNumber");
 
     res.json(orders);
   } catch (error) {
@@ -58,14 +59,13 @@ const getOrders = async (req, res) => {
   }
 };
 
-// Customer - Get own orders
 const getMyOrders = async (req, res) => {
   try {
     const orders = await Order.find({
-      customer: req.user._id,
+      customer: req.user.id,
     })
-      .populate("driver", "name")
-      .populate("vehicle");
+      .populate("driver", "name driverId")
+      .populate("vehicle", "vehicleId registrationNumber");
 
     res.json(orders);
   } catch (error) {
@@ -74,28 +74,13 @@ const getMyOrders = async (req, res) => {
     });
   }
 };
-const assignDriverVehicle = async (req, res) => {
+
+const getOrderById = async (req, res) => {
   try {
-    const { orderId } = req.params;
-    const { driverId, vehicleId } = req.body;
-
-    const driver = await User.findById(driverId);
-
-    if (!driver || driver.role !== "driver") {
-      return res.status(404).json({
-        message: "Driver not found",
-      });
-    }
-
-    const vehicle = await Vehicle.findById(vehicleId);
-
-    if (!vehicle) {
-      return res.status(404).json({
-        message: "Vehicle not found",
-      });
-    }
-
-    const order = await Order.findById(orderId);
+    const order = await Order.findOne({ orderId: req.params.id })
+      .populate("user", "_id name email driverId")
+      .populate("driver", "_id name driverId")
+      .populate("vehicle", "_id vehicleId registrationNumber");
 
     if (!order) {
       return res.status(404).json({
@@ -103,25 +88,26 @@ const assignDriverVehicle = async (req, res) => {
       });
     }
 
-    order.driver = driverId;
-    order.vehicle = vehicleId;
-    order.status = "Assigned";
+    if (
+      req.user.role === "user" &&
+      order.customer._id.toString() !== req.user.id
+    ) {
+      return res.status(403).json({
+        message: "Access denied",
+      });
+    }
 
-    await order.save();
-
-    res.json({
-      message: "Driver and Vehicle assigned successfully",
-      order,
-    });
-
+    res.json(order);
   } catch (error) {
     res.status(500).json({
       message: error.message,
     });
   }
 };
+
 module.exports = {
   createOrder,
   getOrders,
   getMyOrders,
+  getOrderById,
 };

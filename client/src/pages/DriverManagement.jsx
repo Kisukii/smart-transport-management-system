@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function DriverManagement({ goBack }) {
+  const navigate = useNavigate();
   const [drivers, setDrivers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState("");
@@ -32,14 +34,15 @@ function DriverManagement({ goBack }) {
   const filteredDrivers = drivers.filter(
     (driver) =>
       driver.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      driver.email.toLowerCase().includes(searchTerm.toLowerCase())
+      driver.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (driver.driverId || "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-white p-8">
 
       <button
-        onClick={goBack}
+        onClick={() => (goBack ? goBack() : navigate(-1))}
         className="mb-6 bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg"
       >
         ← Back to Dashboard
@@ -106,6 +109,7 @@ function DriverManagement({ goBack }) {
           <thead className="bg-slate-700">
 
             <tr>
+              <th className="p-4 text-left">Driver ID</th>
               <th className="p-4 text-left">Name</th>
               <th className="p-4 text-left">Email</th>
               <th className="p-4 text-left">Role</th>
@@ -124,6 +128,10 @@ function DriverManagement({ goBack }) {
                   key={driver._id}
                   className="border-b border-slate-700 hover:bg-slate-800"
                 >
+                  <td className="p-4">
+                    {driver.driverId || driver._id}
+                  </td>
+
                   <td className="p-4">
                     {driver.name}
                   </td>
@@ -148,7 +156,7 @@ function DriverManagement({ goBack }) {
 
               <tr>
                 <td
-                  colSpan="4"
+                  colSpan="5"
                   className="text-center py-8 text-gray-400"
                 >
                   No Drivers Found

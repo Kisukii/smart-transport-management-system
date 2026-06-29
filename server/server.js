@@ -8,7 +8,7 @@ const driverRoutes = require("./routes/driverRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const customerRoutes = require("./routes/customerRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
-
+const orderRequestRoutes = require("./routes/orderRequestRoutes");
 const connectDB = require("./config/db");
 const { protect, authorize } = require("./middleware/authMiddleware");
 const profileRoutes = require("./routes/profileRoutes");
@@ -21,12 +21,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/profile", profileRoutes);
-
-app.use("/api/customers", customerRoutes);
-app.use("/api/driver", driverRoutes);
-app.use("/api/auth",authRoutes);
-
-// ROUTES
+app.use("/api/orderrequests", orderRequestRoutes);
+app.use("/api/user", customerRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/drivers", driverRoutes);
@@ -54,7 +50,7 @@ app.get("/api/driver", protect, authorize("driver"), (req, res) => {
   res.json({ message: "Welcome Driver" });
 });
 
-app.get("/api/user", protect, authorize("customer"), (req, res) => {
+app.get("/api/user", protect, authorize("user"), (req, res) => {
   res.json({ message: "Welcome Customer" });
 });
 

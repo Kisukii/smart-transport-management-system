@@ -14,7 +14,7 @@ import VehicleTracking from "./pages/VehicleTracking";
 import NewOrder from "./pages/NewOrder";
 import MyOrders from "./pages/MyOrders";
 
-import DriverDashboard from "./pages/DriverDashboard";
+
 import DriverNotifications from "./pages/DriverNotifications";
 import MyDeliveries from "./pages/MyDeliveries";
 import VehicleIssueReport from "./pages/VehicleIssueReport";
@@ -29,7 +29,7 @@ import DeliveryHistory from "./pages/DeliveryHistory";
 import DownloadReceipt from "./pages/DownloadReceipt";
 import PlaceOrder from "./pages/PlaceOrder";
 import TrackShipment from "./pages/TrackShipment";
-
+import MyRequests from "./pages/MyRequests.";
 import DriverLayout from "./pages/DriverLayout";
 import UserLayout from "./pages/UserLayout";
 // import ManagerLayout from "./pages/ManagerLayout";
@@ -53,19 +53,20 @@ function App() {
         <Route path="/orders" element={<MyOrders />} />
       {/* </Route> */}
 
-      <Route element={<DriverLayout />}>
-        <Route path="/driver" element={<DriverDashboard />} />
+
+        <Route path="/driver" element={<DriverLayout />} />
         <Route path="/driver/new-orders" element={<NewOrderRequests />} />
         <Route path="/driverdeliveries" element={<MyDeliveries />} />
         <Route path="/navigation" element={<RouteNavigation />} />
         <Route path="/vehiclestatus" element={<VehicleStatus />} />
         <Route path="/report-issue" element={<VehicleIssueReport />} />
         <Route path="/drivernotifications" element={<DriverNotifications />} />
-      </Route>
+ 
 
       <Route element={<UserLayout />}>
         <Route path="/user" element={<UserDashboard />} />
         <Route path="/place-order" element={<PlaceOrder />} />
+        <Route path="/my-requests" element={<MyRequests />} />
         <Route path="/my-orders" element={<MyOrders />} />
         <Route path="/track-shipment" element={<TrackShipment />} />
         <Route path="/track-shipment/:id" element={<TrackShipment />} />

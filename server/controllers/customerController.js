@@ -2,7 +2,7 @@ const User = require("../models/User");
 
 const getCustomers = async (req, res) => {
   try {
-    const customers = await User.find({ role: "customer" }).sort({
+    const customers = await User.find({ role: "" }).sort({
       createdAt: -1,
     });
 

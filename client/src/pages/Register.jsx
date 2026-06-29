@@ -6,7 +6,7 @@ function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("customer");
+  const [role, setRole] = useState("user");
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -72,7 +72,7 @@ function Register() {
           onChange={(e) => setRole(e.target.value)}
           className="w-full p-3 rounded-xl bg-[#334155] mb-4"
         >
-          <option value="customer">customer</option>
+          <option value="user">user</option>
           <option value="driver">Driver</option>
           <option value="manager">Manager</option>
 

@@ -1,7 +1,16 @@
 const mongoose = require("mongoose");
 
+const generateOrderId = () => {
+  return `ORD-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
+};
+
 const orderSchema = new mongoose.Schema(
   {
+    orderId: {
+      type: String,
+      unique: true,
+      index: true,
+    },
     customer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -30,32 +39,26 @@ const orderSchema = new mongoose.Schema(
 
     pickupDate: {
       type: Date,
-      required: true,
     },
 
     pickupTime: {
       type: String,
-      required: true,
     },
 
     packageType: {
       type: String,
-      required: true,
     },
 
     vehicleType: {
       type: String,
-      required: true,
     },
 
     packageWeight: {
       type: Number,
-      required: true,
     },
 
     paymentMethod: {
       type: String,
-      required: true,
     },
 
     instructions: {
@@ -94,5 +97,12 @@ const orderSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+orderSchema.pre("save", function (next) {
+  if (!this.orderId) {
+    this.orderId = generateOrderId();
+  }
+  next();
+});
 
 module.exports = mongoose.model("Order", orderSchema);
