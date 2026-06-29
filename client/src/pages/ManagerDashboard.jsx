@@ -72,20 +72,8 @@ export default function ManagerDashboard() {
             ➕ New Request
           </button>
 
-          <button
-            onClick={() => navigate("/manager/order-requests")}
-            className=" bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl"
-          >
-            Order Requests
-          </button>
-
-          <button
-            onClick={() => navigate("/manager/assign-order")}
-            className=" bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl"
-          >
-            Assign Order
-          </button>
-
+          
+          
           <button
             onClick={() => navigate("/manager/orders")}
             className= "bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl"
@@ -93,19 +81,8 @@ export default function ManagerDashboard() {
             📦 View Shipments
           </button>
 
-          <button
-            onClick={() => navigate("/manager/drivers")}
-            className=" bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl"
-          >
-            👨‍✈️ Driver Management
-          </button>
-
-          <button
-            onClick={() => navigate("/manager/vehicles")}
-            className=" bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl"
-          >
-            🚚 Vehicle Management
-          </button>
+          
+          
 
           <button
             onClick={() => navigate("/manager/tracking")}

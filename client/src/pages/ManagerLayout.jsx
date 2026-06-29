@@ -60,6 +60,7 @@ const ManagerLayout = () => {
             Order Requests
             </button>
 
+            
           <button
             onClick={() => navigate("/manager/assign-order")}
             className={`w-full text-left p-3 rounded-xl transition-colors ${
@@ -71,27 +72,9 @@ const ManagerLayout = () => {
             Assign Order
           </button>
 
-          <button
-            onClick={() => navigate("/manager/orders")}
-            className={`w-full text-left p-3 rounded-xl transition-colors ${
-              location.pathname === "/manager/orders"
-                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-950/40 font-medium"
-                : "text-slate-300 hover:bg-slate-800 hover:text-white"
-            }`}
-          >
-            All Shipments
-          </button>
           
-          <button
-            onClick={() => navigate("/manager/tracking")}
-            className={`w-full text-left p-3 rounded-xl transition-colors ${
-              location.pathname === "/manager/tracking"
-                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-950/40 font-medium"
-                : "text-slate-300 hover:bg-slate-800 hover:text-white"
-            }`}
-          >
-            Vehicle Tracking
-          </button>
+          
+          
 
          <button
             onClick={() => navigate("/manager/vehicles")}
@@ -114,16 +97,7 @@ const ManagerLayout = () => {
           >
             Driver Management
           </button>
-          <button
-            onClick={() => navigate("/manager/reports")}
-            className={`w-full text-left p-3 rounded-xl transition-colors ${
-              location.pathname === "/manager/reports"
-                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-950/40 font-medium"
-                : "text-slate-300 hover:bg-slate-800 hover:text-white"
-            }`}
-          >
-            Reports & Analytics
-          </button>
+         
 
            <button
             onClick={() => navigate("/manager/settings")}
