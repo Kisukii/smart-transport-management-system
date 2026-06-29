@@ -5,6 +5,7 @@ const OrdersManagement = () => {
 
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
 
   const fetchOrders = async () => {
@@ -67,6 +68,20 @@ const OrdersManagement = () => {
 
 
 
+  const q = searchTerm.trim().toLowerCase();
+
+  const filteredOrders = orders.filter((o) => {
+    if (!q) return true;
+    const phone = (o.customerPhone || o.phone || "").toString().toLowerCase();
+    const name = (o.customerName || "").toString().toLowerCase();
+    const pickup = (o.pickupLocation || "").toString().toLowerCase();
+    const drop = (o.dropLocation || "").toString().toLowerCase();
+    const id = (o.orderId || o._id || "").toString().toLowerCase();
+    return (
+      name.includes(q) || phone.includes(q) || pickup.includes(q) || drop.includes(q) || id.includes(q)
+    );
+  });
+
   if (loading) {
     return (
       <div className="p-10 text-white">
@@ -80,12 +95,12 @@ const OrdersManagement = () => {
   return (
 
     <div className="min-h-screen bg-slate-950 text-white p-8">
-
-
-      <h1 className="text-3xl font-bold mb-8">
-        Orders Management
-      </h1>
-
+      <div className="flex items-start justify-between mb-6">
+        <div>
+          <h1 className="text-3xl font-bold">Orders Management</h1>
+          </div>
+        <div />
+      </div>
 
 
       {/* Cards */}
@@ -98,9 +113,7 @@ const OrdersManagement = () => {
             Total Orders
           </p>
 
-          <h2 className="text-3xl font-bold">
-            {orders.length}
-          </h2>
+            <h2 className="text-3xl font-bold">{filteredOrders.length}</h2>
         </div>
 
 
@@ -111,13 +124,7 @@ const OrdersManagement = () => {
             Pending
           </p>
 
-          <h2 className="text-3xl text-yellow-400">
-            {
-              orders.filter(
-                o => (o.status || "Pending") === "Pending"
-              ).length
-            }
-          </h2>
+            <h2 className="text-3xl text-yellow-400">{filteredOrders.filter((o) => (o.status || "Pending") === "Pending").length}</h2>
 
         </div>
 
@@ -129,13 +136,7 @@ const OrdersManagement = () => {
             Assigned
           </p>
 
-          <h2 className="text-3xl text-blue-400">
-            {
-              orders.filter(
-                o => o.status === "Assigned"
-              ).length
-            }
-          </h2>
+            <h2 className="text-3xl text-blue-400">{filteredOrders.filter((o) => o.status === "Assigned").length}</h2>
 
         </div>
 
@@ -148,18 +149,24 @@ const OrdersManagement = () => {
             Completed
           </p>
 
-          <h2 className="text-3xl text-green-400">
-            {
-              orders.filter(
-                o => o.status === "Completed"
-              ).length
-            }
-          </h2>
+            <h2 className="text-3xl text-green-400">{filteredOrders.filter((o) => o.status === "Completed").length}</h2>
 
         </div>
 
 
       </div>
+
+
+      
+          <div className="mt-3 mb-6">
+            <input
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search..."
+              className="bg-slate-800 border border-slate-700 rounded-xl p-2 outline-none focus:border-indigo-500 text-white w-80"
+            />
+          </div>
+        
 
 
 
@@ -218,7 +225,7 @@ const OrdersManagement = () => {
           <tbody>
 
 
-          {orders.length === 0 ? (
+          {filteredOrders.length === 0 ? (
 
             <tr>
               <td
@@ -233,7 +240,7 @@ const OrdersManagement = () => {
           ) : (
 
 
-            orders.map((order)=>(
+            filteredOrders.map((order) => (
 
               <tr
                 key={order._id}
