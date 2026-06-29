@@ -18,15 +18,14 @@ function VehicleManagement({ goBack }) {
 
   const loadVehicles = async () => {
     try {
-      const res = await fetch(
-        "http://localhost:5000/api/vehicles"
-      );
-
+      const res = await fetch("http://localhost:5000/api/vehicles");
       const data = await res.json();
+
+      if (!res.ok) throw new Error(data.message);
 
       setVehicles(data);
     } catch (err) {
-      setError("Failed to load vehicles");
+      setError(err.message || "Failed to load vehicles");
     } finally {
       setLoading(false);
     }
@@ -34,21 +33,18 @@ function VehicleManagement({ goBack }) {
 
   const handleAddVehicle = async () => {
     try {
-      const res = await fetch(
-        "http://localhost:5000/api/vehicles",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            vehicleNumber,
-            type,
-            capacity,
-            status: "Available",
-          }),
-        }
-      );
+      const res = await fetch("http://localhost:5000/api/vehicles", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          vehicleNumber,
+          type,
+          capacity,
+          status: "Available",
+        }),
+      });
 
       const data = await res.json();
 
@@ -69,28 +65,27 @@ function VehicleManagement({ goBack }) {
   };
 
   const handleDelete = async (id) => {
-    try {
-      await fetch(
-        `http://localhost:5000/api/vehicles/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
+    if (!window.confirm("Delete this vehicle?")) return;
 
-      setVehicles(
-        vehicles.filter(
-          (vehicle) => vehicle._id !== id
-        )
-      );
+    try {
+      const res = await fetch(`http://localhost:5000/api/vehicles/${id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message);
+      }
+
+      setVehicles(vehicles.filter((vehicle) => vehicle._id !== id));
     } catch (err) {
-      alert("Failed to delete vehicle");
+      alert(err.message);
     }
   };
 
   const filteredVehicles = vehicles.filter((vehicle) =>
-    vehicle.vehicleNumber
-      ?.toLowerCase()
-      .includes(search.toLowerCase())
+    vehicle.vehicleNumber?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -113,9 +108,7 @@ function VehicleManagement({ goBack }) {
           type="text"
           placeholder="Search Vehicle"
           value={search}
-          onChange={(e) =>
-            setSearch(e.target.value)
-          }
+          onChange={(e) => setSearch(e.target.value)}
           className="flex-1 p-3 rounded-xl bg-[#334155]"
         />
 
@@ -123,9 +116,7 @@ function VehicleManagement({ goBack }) {
           onClick={() =>
             setVehicles(
               [...vehicles].sort((a, b) =>
-                a.vehicleNumber.localeCompare(
-                  b.vehicleNumber
-                )
+                a.vehicleNumber.localeCompare(b.vehicleNumber)
               )
             )
           }
@@ -139,8 +130,7 @@ function VehicleManagement({ goBack }) {
             setVehicles(
               [...vehicles].sort(
                 (a, b) =>
-                  new Date(b.createdAt) -
-                  new Date(a.createdAt)
+                  new Date(b.createdAt) - new Date(a.createdAt)
               )
             )
           }
@@ -169,9 +159,7 @@ function VehicleManagement({ goBack }) {
             type="text"
             placeholder="Vehicle Number"
             value={vehicleNumber}
-            onChange={(e) =>
-              setVehicleNumber(e.target.value)
-            }
+            onChange={(e) => setVehicleNumber(e.target.value)}
             className="w-full p-3 bg-[#334155] rounded-xl mb-3"
           />
 
@@ -179,19 +167,15 @@ function VehicleManagement({ goBack }) {
             type="text"
             placeholder="Vehicle Type"
             value={type}
-            onChange={(e) =>
-              setType(e.target.value)
-            }
+            onChange={(e) => setType(e.target.value)}
             className="w-full p-3 bg-[#334155] rounded-xl mb-3"
           />
 
           <input
             type="number"
-            placeholder="Capacity"
+            placeholder="Capacity (kg)"
             value={capacity}
-            onChange={(e) =>
-              setCapacity(e.target.value)
-            }
+            onChange={(e) => setCapacity(e.target.value)}
             className="w-full p-3 bg-[#334155] rounded-xl mb-3"
           />
 
@@ -215,9 +199,7 @@ function VehicleManagement({ goBack }) {
       {loading ? (
         <p>Loading Vehicles...</p>
       ) : error ? (
-        <p className="text-red-400">
-          {error}
-        </p>
+        <p className="text-red-400">{error}</p>
       ) : (
         <div className="bg-[#1e293b] rounded-2xl overflow-hidden">
 
@@ -225,70 +207,62 @@ function VehicleManagement({ goBack }) {
 
             <thead>
               <tr className="bg-[#334155]">
-                <th className="p-4 text-left">
-                  Vehicle Number
-                </th>
-                <th className="p-4 text-left">
-                  Type
-                </th>
-                <th className="p-4 text-left">
-                  Capacity
-                </th>
-                <th className="p-4 text-left">
-                  Status
-                </th>
-                <th className="p-4 text-left">
-                  Actions
-                </th>
+                <th className="p-4 text-left">Vehicle ID</th>
+                <th className="p-4 text-left">Vehicle Number</th>
+                <th className="p-4 text-left">Type</th>
+                <th className="p-4 text-left">Capacity</th>
+                <th className="p-4 text-left">Status</th>
+                <th className="p-4 text-left">Actions</th>
               </tr>
             </thead>
 
             <tbody>
-              {filteredVehicles.map(
-                (vehicle) => (
-                  <tr
-                    key={vehicle._id}
-                    className="border-b border-slate-700"
-                  >
-                    <td className="p-4">
-                      {vehicle.vehicleNumber}
-                    </td>
+              {filteredVehicles.map((vehicle) => (
+                <tr
+                  key={vehicle._id}
+                  className="border-b border-slate-700"
+                >
+                  <td className="p-4 font-semibold text-cyan-400">
+                    {vehicle.vehicleId}
+                  </td>
 
-                    <td className="p-4">
-                      {vehicle.type}
-                    </td>
+                  <td className="p-4">
+                    {vehicle.vehicleNumber}
+                  </td>
 
-                    <td className="p-4">
-                      {vehicle.capacity}
-                    </td>
+                  <td className="p-4">
+                    {vehicle.type}
+                  </td>
 
-                    <td className="p-4">
+                  <td className="p-4">
+                    {vehicle.capacity} kg
+                  </td>
+
+                  <td className="p-4">
+                    <span className="bg-green-700 px-3 py-1 rounded-full">
                       {vehicle.status}
-                    </td>
+                    </span>
+                  </td>
 
-                    <td className="p-4">
+                  <td className="p-4">
 
-                      <button
-                        className="bg-yellow-600 hover:bg-yellow-700 px-3 py-1 rounded mr-2"
-                      >
-                        Edit
-                      </button>
+                    <button
+                      className="bg-yellow-600 hover:bg-yellow-700 px-3 py-1 rounded mr-2"
+                    >
+                      Edit
+                    </button>
 
-                      <button
-                        onClick={() =>
-                          handleDelete(
-                            vehicle._id
-                          )
-                        }
-                        className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded"
-                      >
-                        Delete
-                      </button>
+                    <button
+                      onClick={() => handleDelete(vehicle._id)}
+                      className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded"
+                    >
+                      Delete
+                    </button>
 
-                    </td>
-                  </tr>
-                )
-              )}
+                  </td>
+
+                </tr>
+              ))}
             </tbody>
 
           </table>

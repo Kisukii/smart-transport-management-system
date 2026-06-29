@@ -98,11 +98,11 @@ const orderSchema = new mongoose.Schema(
   }
 );
 
-orderSchema.pre("save", function (next) {
+orderSchema.pre("save", function () {
   if (!this.orderId) {
     this.orderId = generateOrderId();
   }
-  next();
+ 
 });
 
 module.exports = mongoose.model("Order", orderSchema);

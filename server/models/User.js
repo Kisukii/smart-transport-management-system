@@ -38,11 +38,9 @@ const userSchema = new mongoose.Schema(
     timestamps:true
 });
 
-userSchema.pre("save", function(next) {
+userSchema.pre("save", function () {
   if (this.role === "driver" && !this.driverId) {
     this.driverId = generateDriverId();
   }
-  next();
 });
-
 module.exports = mongoose.model("User",userSchema);

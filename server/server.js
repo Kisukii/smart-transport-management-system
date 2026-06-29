@@ -28,7 +28,7 @@ app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/drivers", driverRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/notifications", notificationRoutes);
-
+app.use("/api/orders", require("./routes/orderRoutes"));
 app.get("/", (req, res) => {
   res.send("Server Running");
 });

@@ -1,164 +1,192 @@
-import { useNavigate } from "react-router-dom";
- 
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 const DriverDashboard = () => {
-  const navigate = useNavigate();
- 
-  const handleLogout = () => {
-    localStorage.removeItem("driverToken");
-    navigate("/");
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    loadOrders();
+  }, []);
+
+  const loadOrders = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const res = await axios.get(
+        "http://localhost:5000/api/order/drivers",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setOrders(res.data);
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "Failed to load assigned orders."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
- 
+
+  const updateStatus = async (orderId, status) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.put(
+        `http://localhost:5000/api/order/${orderId}/status`,
+        { status },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      loadOrders();
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to update status");
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="text-white text-xl">
+        Loading...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-red-500 text-xl">
+        {error}
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      {/* Sidebar */}
-      <aside className="fixed left-0 top-0 h-screen w-72 bg-slate-900/95 border-r border-slate-800 p-6 flex flex-col">
-        <h1 className="text-2xl font-bold mb-10 tracking-tight">🚚 Driver Panel</h1>
- 
-        <nav className="space-y-2">
-          <button className="w-full text-left bg-indigo-600 p-3 rounded-xl shadow-lg shadow-indigo-950/40 font-medium">
-            Dashboard
-          </button>
- 
-          <button onClick={() => navigate("/driverdeliveries")} className="w-full text-left text-slate-300 hover:bg-slate-800 hover:text-white p-3 rounded-xl transition-colors">
-            My Deliveries
-          </button>
- 
-          <button onClick={() => navigate("/navigation")} className="w-full text-left text-slate-300 hover:bg-slate-800 hover:text-white p-3 rounded-xl transition-colors">
-            Route Navigation
-          </button>
- 
-          <button onClick={() => navigate("/vehiclestatus")} className="w-full text-left text-slate-300 hover:bg-slate-800 hover:text-white p-3 rounded-xl transition-colors">
-            Vehicle Status
-          </button>
- 
-          <button onClick={() => navigate("/report-issue")} className="w-full text-left text-slate-300 hover:bg-slate-800 hover:text-white p-3 rounded-xl transition-colors">
-            Vehicle Issue Report
-          </button>
- 
-          <button onClick={() => navigate("/drivernotifications")} className="w-full text-left text-slate-300 hover:bg-slate-800 hover:text-white p-3 rounded-xl transition-colors">
-            Notifications
-          </button>
- 
-          <button onClick={() => navigate("/driver/profile")} className="w-full text-left text-slate-300 hover:bg-slate-800 hover:text-white p-3 rounded-xl transition-colors">
-            Driver Profile
-          </button>
-        </nav>
- 
-        <button
-          onClick={handleLogout}
-          className="mt-auto text-left bg-red-500/10 text-red-400 hover:bg-red-600 hover:text-white p-3 rounded-xl transition-colors font-medium"
-        >
-          Logout
-        </button>
-      </aside>
- 
-      {/* Main */}
-      <main className="ml-72">
-        <div className="px-6 py-8">
-        {/* Header */}
-        <div className="mb-8 bg-gradient-to-r from-indigo-600 via-indigo-600 to-purple-700 rounded-3xl p-8 shadow-2xl shadow-indigo-950/30 relative overflow-hidden">
-          <div className="absolute -right-10 -top-10 w-48 h-48 bg-white/5 rounded-full blur-2xl" />
-          <h2 className="text-4xl font-bold relative">Welcome back</h2>
-          <p className="text-indigo-100/90 mt-2 relative">
-            Manage your deliveries, vehicle status, and route details here.
-          </p>
+    <div className="min-h-screen bg-slate-950 text-white p-8">
+
+      <h1 className="text-4xl font-bold mb-8">
+        Driver Dashboard
+      </h1>
+
+      {orders.length === 0 ? (
+        <div className="bg-slate-900 rounded-2xl p-8 text-center">
+          No assigned orders.
         </div>
- 
-        {/* Stats */}
-        <div className="grid grid-cols-4 gap-6 mb-8">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:-translate-y-1 hover:border-slate-700 transition">
-            <p className="text-slate-400 text-sm">Today's Deliveries</p>
-            <h3 className="text-4xl font-bold mt-3">6</h3>
-            <p className="text-green-400 text-sm mt-2">+2 new assigned</p>
-          </div>
- 
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:-translate-y-1 hover:border-slate-700 transition">
-            <p className="text-slate-400 text-sm">Completed</p>
-            <h3 className="text-4xl font-bold mt-3 text-green-400">3</h3>
-            <p className="text-slate-500 text-sm mt-2">Finished today</p>
-          </div>
- 
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:-translate-y-1 hover:border-slate-700 transition">
-            <p className="text-slate-400 text-sm">Pending</p>
-            <h3 className="text-4xl font-bold mt-3 text-yellow-400">3</h3>
-            <p className="text-slate-500 text-sm mt-2">Needs action</p>
-          </div>
- 
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:-translate-y-1 hover:border-slate-700 transition">
-            <p className="text-slate-400 text-sm">Vehicle Status</p>
-            <h3 className="text-2xl font-bold mt-3 text-cyan-400">Available</h3>
-            <p className="text-slate-500 text-sm mt-2">KL-01-AB-2345</p>
-          </div>
-        </div>
- 
-        {/* Content Grid */}
-        <div className="grid grid-cols-3 gap-6">
-          {/* Current Delivery */}
-          <div className="col-span-2 bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold">Current Delivery</h3>
-              <span className="bg-yellow-500/10 text-yellow-400 px-4 py-2 rounded-full text-sm font-medium">
-                In Progress
-              </span>
-            </div>
- 
-            <div className="grid grid-cols-2 gap-5">
-              <div className="bg-slate-800 rounded-2xl p-5">
-                <p className="text-slate-400 text-sm">Customer</p>
-                <h4 className="text-lg font-semibold mt-1">Rahul Nair</h4>
-              </div>
- 
-              <div className="bg-slate-800 rounded-2xl p-5">
-                <p className="text-slate-400 text-sm">Estimated Time</p>
-                <h4 className="text-lg font-semibold mt-1">45 minutes</h4>
-              </div>
- 
-              <div className="bg-slate-800 rounded-2xl p-5">
-                <p className="text-slate-400 text-sm">Pickup</p>
-                <h4 className="text-lg font-semibold mt-1">Warehouse A, Kochi</h4>
-              </div>
- 
-              <div className="bg-slate-800 rounded-2xl p-5">
-                <p className="text-slate-400 text-sm">Drop</p>
-                <h4 className="text-lg font-semibold mt-1">MG Road, Ernakulam</h4>
-              </div>
-            </div>
- 
-            <button
-              onClick={() => navigate("/navigation")}
-              className="mt-6 bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-xl font-semibold transition-colors"
+      ) : (
+        <div className="grid md:grid-cols-2 gap-6">
+
+          {orders.map((order) => (
+
+            <div
+              key={order._id}
+              className="bg-slate-900 rounded-2xl p-6 shadow-lg"
             >
-              View Route Details
-            </button>
-          </div>
- 
-          {/* Quick Actions */}
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
-            <h3 className="text-2xl font-bold mb-5">Quick Actions</h3>
- 
-            <div className="space-y-3">
-              <button onClick={() => navigate("/driverdeliveries")} className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left transition-colors">
-                View Deliveries
-              </button>
- 
-              <button onClick={() => navigate("/vehiclestatus")} className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left transition-colors">
-                Update Vehicle Status
-              </button>
- 
-              <button onClick={() => navigate("/report-issue")} className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left transition-colors">
-                Report Vehicle Issue
-              </button>
- 
-              <button onClick={() => navigate("/drivernotifications")} className="w-full bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl text-left transition-colors">
-                Check Notifications
-              </button>
+
+              <div className="flex justify-between mb-5">
+
+                <h2 className="font-bold text-xl">
+                  {order.orderId}
+                </h2>
+
+                <span className="bg-cyan-600 px-3 py-1 rounded-full text-sm">
+                  {order.status}
+                </span>
+
+              </div>
+
+              <p><strong>Customer :</strong> {order.customerName}</p>
+
+              <p><strong>Phone :</strong> {order.phone}</p>
+
+              <p><strong>Pickup :</strong> {order.pickupLocation}</p>
+
+              <p><strong>Drop :</strong> {order.dropLocation}</p>
+
+              <p><strong>Vehicle :</strong> {order.vehicle?.vehicleNumber}</p>
+
+              <p><strong>Vehicle ID :</strong> {order.vehicle?.vehicleId}</p>
+
+              <p><strong>Type :</strong> {order.vehicle?.type}</p>
+
+              <p><strong>Capacity :</strong> {order.vehicle?.capacity} kg</p>
+
+              <div className="mt-6 flex flex-wrap gap-3">
+
+                {order.status === "Assigned" && (
+                  <>
+                    <button
+                      onClick={() =>
+                        updateStatus(order._id, "Accepted")
+                      }
+                      className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-xl"
+                    >
+                      Accept
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        updateStatus(order._id, "Rejected")
+                      }
+                      className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-xl"
+                    >
+                      Reject
+                    </button>
+                  </>
+                )}
+
+                {order.status === "Accepted" && (
+                  <button
+                    onClick={() =>
+                      updateStatus(order._id, "Picked Up")
+                    }
+                    className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl"
+                  >
+                    Picked Up
+                  </button>
+                )}
+
+                {order.status === "Picked Up" && (
+                  <button
+                    onClick={() =>
+                      updateStatus(order._id, "In Transit")
+                    }
+                    className="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded-xl"
+                  >
+                    In Transit
+                  </button>
+                )}
+
+                {order.status === "In Transit" && (
+                  <button
+                    onClick={() =>
+                      updateStatus(order._id, "Delivered")
+                    }
+                    className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-xl"
+                  >
+                    Delivered
+                  </button>
+                )}
+
+              </div>
+
             </div>
-          </div>
+
+          ))}
+
         </div>
-        </div>
-      </main>
+      )}
+
     </div>
   );
 };
- 
+
 export default DriverDashboard;

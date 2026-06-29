@@ -1,92 +1,215 @@
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const NewOrderRequests = () => {
-  const navigate = useNavigate();
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const assignedOrders = [
-    {
-      _id: "ORD001",
-      pickupLocation: "Kochi",
-      dropLocation: "Trivandrum",
-      customerName: "Anu Joseph",
-      packageDetails: "Electronics package",
-      status: "Assigned",
-    },
-    {
-      _id: "ORD002",
-      pickupLocation: "Ernakulam",
-      dropLocation: "Thrissur",
-      customerName: "Rahul Nair",
-      packageDetails: "Documents",
-      status: "Assigned",
-    },
-  ];
+  useEffect(() => {
+    loadOrders();
+  }, []);
 
-  const handleAccept = (orderId) => {
-    console.log("Accept order:", orderId);
+  const loadOrders = async () => {
+    try {
+      const token = localStorage.getItem("token");
 
-    // Backend later:
-    // PUT /api/orders/:id/accept
+      const res = await axios.get(
+        "http://localhost:5000/api/orders/driver",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    navigate("/driverdeliveries");
+      setOrders(res.data);
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+        err.message ||
+        "Failed to load orders"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleReject = (orderId) => {
-    console.log("Reject order:", orderId);
+  const updateStatus = async (id, status) => {
+    try {
+      const token = localStorage.getItem("token");
 
-    // Backend later:
-    // PUT /api/orders/:id/reject
+      await axios.put(
+        `http://localhost:5000/api/orders/${id}/status`,
+        { status },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      loadOrders();
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to update order");
+    }
   };
+
+  if (loading)
+    return (
+      <div className="text-white p-8">
+        Loading Orders...
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="text-red-500 p-8">
+        {error}
+      </div>
+    );
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
-      <main className="p-8">
-        <h1 className="text-3xl font-bold mb-8">New Order Requests</h1>
+    <div className="min-h-screen bg-slate-950 text-white p-8">
 
-        <div className="grid grid-cols-2 gap-6">
-          {assignedOrders.map((order) => (
+      <h1 className="text-3xl font-bold mb-8">
+        My Orders
+      </h1>
+
+      {orders.length === 0 ? (
+        <p>No Assigned Orders</p>
+      ) : (
+        <div className="grid md:grid-cols-2 gap-6">
+
+          {orders.map((order) => (
+
             <div
               key={order._id}
-              className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl"
+              className="bg-slate-900 rounded-2xl p-6 border border-slate-700"
             >
-              <div className="flex justify-between items-center mb-5">
-                <h2 className="text-xl font-bold">{order._id}</h2>
-                <span className="bg-blue-500/10 text-blue-400 px-4 py-2 rounded-full text-sm">
+
+              <div className="flex justify-between mb-4">
+
+                <h2 className="text-xl font-bold">
+                  {order.orderId}
+                </h2>
+
+                <span className="bg-blue-600 px-3 py-1 rounded-full text-sm">
                   {order.status}
                 </span>
+
               </div>
 
-              <p className="text-slate-400">Customer</p>
-              <p className="mb-3">{order.customerName}</p>
+              <p>
+                <b>Customer:</b> {order.customerName}
+              </p>
 
-              <p className="text-slate-400">Pickup</p>
-              <p className="mb-3">{order.pickupLocation}</p>
+              <p>
+                <b>Phone:</b> {order.phone}
+              </p>
 
-              <p className="text-slate-400">Drop</p>
-              <p className="mb-3">{order.dropLocation}</p>
+              <p>
+                <b>Pickup:</b> {order.pickupLocation}
+              </p>
 
-              <p className="text-slate-400">Package</p>
-              <p className="mb-5">{order.packageDetails}</p>
+              <p>
+                <b>Drop:</b> {order.dropLocation}
+              </p>
 
-              <div className="flex gap-4">
-                <button
-                  onClick={() => handleAccept(order._id)}
-                  className="bg-green-600 hover:bg-green-700 px-5 py-3 rounded-xl font-semibold"
-                >
-                  Accept
-                </button>
+              <p>
+                <b>Package:</b> {order.packageType}
+              </p>
 
-                <button
-                  onClick={() => handleReject(order._id)}
-                  className="bg-red-500/10 text-red-400 hover:bg-red-600 hover:text-white px-5 py-3 rounded-xl font-semibold"
-                >
-                  Reject
-                </button>
+              <p>
+                <b>Weight:</b> {order.packageWeight} kg
+              </p>
+
+              <p>
+                <b>Payment:</b> {order.paymentMethod}
+              </p>
+
+              <p>
+                <b>Vehicle ID:</b> {order.vehicle?.vehicleId}
+              </p>
+
+              <p>
+                <b>Vehicle Number:</b> {order.vehicle?.vehicleNumber}
+              </p>
+
+              <p>
+                <b>Vehicle Type:</b> {order.vehicle?.type}
+              </p>
+
+              <p>
+                <b>Capacity:</b> {order.vehicle?.capacity} kg
+              </p>
+
+              <div className="mt-6 flex flex-wrap gap-3">
+
+                {order.status === "Assigned" && (
+                  <>
+                    <button
+                      onClick={() =>
+                        updateStatus(order._id, "Accepted")
+                      }
+                      className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-xl"
+                    >
+                      Accept
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        updateStatus(order._id, "Rejected")
+                      }
+                      className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-xl"
+                    >
+                      Reject
+                    </button>
+                  </>
+                )}
+
+                {order.status === "Accepted" && (
+                  <button
+                    onClick={() =>
+                      updateStatus(order._id, "Picked Up")
+                    }
+                    className="bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded-xl"
+                  >
+                    Picked Up
+                  </button>
+                )}
+
+                {order.status === "Picked Up" && (
+                  <button
+                    onClick={() =>
+                      updateStatus(order._id, "In Transit")
+                    }
+                    className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-xl"
+                  >
+                    In Transit
+                  </button>
+                )}
+
+                {order.status === "In Transit" && (
+                  <button
+                    onClick={() =>
+                      updateStatus(order._id, "Delivered")
+                    }
+                    className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded-xl"
+                  >
+                    Delivered
+                  </button>
+                )}
+
               </div>
+
             </div>
+
           ))}
+
         </div>
-      </main>
+      )}
+
     </div>
   );
 };

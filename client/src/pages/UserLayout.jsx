@@ -52,6 +52,16 @@ const linkStyle = {
           >
             My Orders
           </button>
+              <button
+            onClick={() => navigate("/my-requests")}
+            className={`w-full text-left p-3 rounded-xl transition-colors ${
+              location.pathname === "/my-requests"
+                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-950/40 font-medium"
+                : "text-slate-300 hover:bg-slate-800 hover:text-white"
+            }`}
+          >
+            My requests
+          </button>
  
           <button
             onClick={() => navigate("/user/profile")}

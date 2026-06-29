@@ -4,10 +4,11 @@ const DriverLayout = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("driverToken");
-    navigate("/");
-  };
-
+  localStorage.removeItem("token");
+  localStorage.removeItem("role");
+  localStorage.removeItem("userId");
+  navigate("/");
+};
   return (
     <div className="min-h-screen bg-slate-950 text-white">
 
@@ -21,7 +22,7 @@ const DriverLayout = () => {
         <nav className="space-y-3">
 
           <button
-            onClick={() => navigate("/driver")}
+            onClick={() => navigate("/driver-dashboard")}
             className="w-full text-left hover:bg-slate-800 p-3 rounded-xl"
           >
             Dashboard
