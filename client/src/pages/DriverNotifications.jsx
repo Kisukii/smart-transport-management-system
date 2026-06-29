@@ -60,7 +60,7 @@ useEffect(() => {
           <button onClick={() => navigate("/vehiclestatus")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl"> Vehicle Status</button>
           <button onClick={() => navigate("/report-issue")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl"> Vehicle Issue Report</button>
           <button className="w-full text-left bg-indigo-600 p-3 rounded-xl"> Notifications</button>
-          <button onClick={() => navigate("/profile")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl"> Driver Profile</button>
+          <button onClick={() => navigate("/driver/profile")} className="w-full text-left hover:bg-slate-800 p-3 rounded-xl"> Driver Profile</button>
         </nav>
 
         <button onClick={handleLogout} className="absolute bottom-6 left-6 right-6 text-left bg-red-500/10 text-red-400 hover:bg-red-600 hover:text-white p-3 rounded-xl">

@@ -116,12 +116,12 @@ function Profile() {
   return (
     <div className="min-h-screen bg-slate-950 text-white p-8">
 
-      <button
-        onClick={handleBack}
-        className="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg mb-6"
-      >
-        ← Back
-      </button>
+      {/* // <button
+      //   onClick={handleBack}
+      //   className="bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg mb-6"
+      // >
+      //   ← Back
+      // </button> */}
 
       <div className="max-w-4xl mx-auto bg-slate-900 rounded-2xl shadow-xl p-8">
 
@@ -146,7 +146,7 @@ function Profile() {
         <div className="grid grid-cols-2 gap-6 mt-10">
 
           <div>
-            <label className="block mb-2 text-gray-400">
+            <label className="block mb-2 text-white">
               Full Name
             </label>
 
@@ -160,7 +160,7 @@ function Profile() {
           </div>
 
           <div>
-            <label className="block mb-2 text-gray-400">
+            <label className="block mb-2 text-white">
               Email
             </label>
 
@@ -174,7 +174,7 @@ function Profile() {
           </div>
 
           <div>
-            <label className="block mb-2 text-gray-400">
+            <label className="block mb-2 text-white">
               Phone
             </label>
 
@@ -188,7 +188,7 @@ function Profile() {
           </div>
 
           <div>
-            <label className="block mb-2 text-gray-400">
+            <label className="block mb-2 text-white">
               Role
             </label>
 
@@ -200,7 +200,7 @@ function Profile() {
           </div>
 
           <div>
-            <label className="block mb-2 text-gray-400">
+            <label className="block mb-2 text-white">
               Status
             </label>
 
@@ -212,7 +212,7 @@ function Profile() {
           </div>
 
           <div>
-            <label className="block mb-2 text-gray-400">
+            <label className="block mb-2 text-white">
               Joined On
             </label>
 
@@ -257,18 +257,18 @@ function Profile() {
             </>
           )}
 
-          <button
+          {/* <button
             onClick={handleLogout}
             className="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-lg"
           >
             Logout
-          </button>
+          </button> */}
 
         </div>
 
       </div>
 
-    </div>
+  </div>
   );
 }
 
