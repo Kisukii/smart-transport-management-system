@@ -1,220 +1,326 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-function OrdersManagement({ goBack }) {
-  const API = "http://localhost:5000/api/orders";
+const OrdersManagement = () => {
 
   const [orders, setOrders] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [editId, setEditId] = useState(null);
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const [newOrder, setNewOrder] = useState({
-    customerName: "",
-    pickup: "",
-    drop: "",
-    status: "Pending",
-  });
 
-  // LOAD ORDERS
-  const loadOrders = async () => {
+  const fetchOrders = async () => {
     try {
-      const res = await axios.get(API);
-      setOrders(res.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
-  useEffect(() => {
-    loadOrders();
-  }, []);
+      const token = localStorage.getItem("token");
 
-  // VALIDATION
-  const validateOrder = () => {
-    if (!newOrder.customerName.trim()) return "Customer name required";
-    if (!newOrder.pickup.trim()) return "Pickup required";
-    if (!newOrder.drop.trim()) return "Drop required";
-    return "";
-  };
+      // Fetch both order requests (customer-submitted) and confirmed orders
+      const [reqRes, ordRes] = await Promise.all([
+        axios
+          .get("http://localhost:5000/api/orderrequests", {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          .catch(() => ({ data: [] })),
+        axios
+          .get("http://localhost:5000/api/orders", {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          .catch(() => ({ data: [] })),
+      ]);
 
-  // SAVE (ADD / UPDATE)
-  const handleSave = async () => {
-    const err = validateOrder();
-    if (err) return setError(err);
+      const reqData = Array.isArray(reqRes.data)
+        ? reqRes.data
+        : reqRes.data.requests || reqRes.data.data || [];
 
-    try {
-      if (editId) {
-        await axios.put(`${API}/${editId}`, newOrder);
-      } else {
-        await axios.post(API, newOrder);
-      }
+      const ordData = Array.isArray(ordRes.data)
+        ? ordRes.data
+        : ordRes.data.orders || ordRes.data.data || [];
 
-      setNewOrder({
-        customerName: "",
-        pickup: "",
-        drop: "",
-        status: "Pending",
+      // Merge and sort newest first
+      const merged = [...reqData, ...ordData].sort((a, b) => {
+        const ta = new Date(a.createdAt || a.created_at || 0).getTime();
+        const tb = new Date(b.createdAt || b.created_at || 0).getTime();
+        return tb - ta;
       });
 
-      setShowForm(false);
-      setEditId(null);
-      setError("");
-      loadOrders();
-    } catch (err) {
-      console.log(err);
+      setOrders(merged);
+
+
+    } catch (error) {
+
+      console.log(
+        "Fetch orders error:",
+        error.response?.data || error.message
+      );
+
+    } finally {
+
+      setLoading(false);
+
     }
   };
 
-  // DELETE
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(`${API}/${id}`);
-      loadOrders();
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
-  // EDIT
-  const handleEdit = (order) => {
-    setNewOrder(order);
-    setEditId(order._id || order.id);
-    setShowForm(true);
-  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+
+
+
+  const q = searchTerm.trim().toLowerCase();
+
+  const filteredOrders = orders.filter((o) => {
+    if (!q) return true;
+    const phone = (o.customerPhone || o.phone || "").toString().toLowerCase();
+    const name = (o.customerName || "").toString().toLowerCase();
+    const pickup = (o.pickupLocation || "").toString().toLowerCase();
+    const drop = (o.dropLocation || "").toString().toLowerCase();
+    const id = (o.orderId || o._id || "").toString().toLowerCase();
+    return (
+      name.includes(q) || phone.includes(q) || pickup.includes(q) || drop.includes(q) || id.includes(q)
+    );
+  });
+
+  if (loading) {
+    return (
+      <div className="p-10 text-white">
+        Loading orders...
+      </div>
+    );
+  }
+
+
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-white p-8">
 
-      <button
-        onClick={goBack}
-        className="mb-6 bg-slate-700 px-4 py-2 rounded"
-      >
-        ← Back
-      </button>
+    <div className="min-h-screen bg-slate-950 text-white p-8">
+      <div className="flex items-start justify-between mb-6">
+        <div>
+          <h1 className="text-3xl font-bold">Orders Management</h1>
+          </div>
+        <div />
+      </div>
 
-      <h1 className="text-4xl font-bold mb-6">Orders Management</h1>
 
-      {/* ADD BUTTON */}
-      <button
-        onClick={() => {
-          setShowForm(true);
-          setEditId(null);
-        }}
-        className="bg-cyan-500 px-4 py-2 rounded mb-6"
-      >
-        + Add Order
-      </button>
+      {/* Cards */}
 
-      {/* FORM */}
-      {showForm && (
-        <div className="bg-[#1e293b] p-6 rounded mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-5 mb-8">
 
-          {error && <p className="text-red-400 mb-3">{error}</p>}
 
-          <input
-            placeholder="Customer Name"
-            className="w-full p-2 mb-2 bg-slate-700"
-            value={newOrder.customerName}
-            onChange={(e) =>
-              setNewOrder({ ...newOrder, customerName: e.target.value })
-            }
-          />
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+          <p className="text-slate-400">
+            Total Orders
+          </p>
 
-          <input
-            placeholder="Pickup Location"
-            className="w-full p-2 mb-2 bg-slate-700"
-            value={newOrder.pickup}
-            onChange={(e) =>
-              setNewOrder({ ...newOrder, pickup: e.target.value })
-            }
-          />
-
-          <input
-            placeholder="Drop Location"
-            className="w-full p-2 mb-2 bg-slate-700"
-            value={newOrder.drop}
-            onChange={(e) =>
-              setNewOrder({ ...newOrder, drop: e.target.value })
-            }
-          />
-
-          <select
-            className="w-full p-2 mb-4 bg-slate-700"
-            value={newOrder.status}
-            onChange={(e) =>
-              setNewOrder({ ...newOrder, status: e.target.value })
-            }
-          >
-            <option>Pending</option>
-            <option>In Progress</option>
-            <option>Completed</option>
-          </select>
-
-          <button
-            onClick={handleSave}
-            className="bg-green-500 px-4 py-2 mr-2"
-          >
-            Save
-          </button>
-
-          <button
-            onClick={() => setShowForm(false)}
-            className="bg-gray-500 px-4 py-2"
-          >
-            Cancel
-          </button>
+            <h2 className="text-3xl font-bold">{filteredOrders.length}</h2>
         </div>
-      )}
 
-      {/* TABLE */}
-      <div className="bg-[#1e293b] rounded overflow-hidden">
+
+
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+
+          <p className="text-slate-400">
+            Pending
+          </p>
+
+            <h2 className="text-3xl text-yellow-400">{filteredOrders.filter((o) => (o.status || "Pending") === "Pending").length}</h2>
+
+        </div>
+
+
+
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+
+          <p className="text-slate-400">
+            Assigned
+          </p>
+
+            <h2 className="text-3xl text-blue-400">{filteredOrders.filter((o) => o.status === "Assigned").length}</h2>
+
+        </div>
+
+
+
+
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+
+          <p className="text-slate-400">
+            Completed
+          </p>
+
+            <h2 className="text-3xl text-green-400">{filteredOrders.filter((o) => o.status === "Completed").length}</h2>
+
+        </div>
+
+
+      </div>
+
+
+      
+          <div className="mt-3 mb-6">
+            <input
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search..."
+              className="bg-slate-800 border border-slate-700 rounded-xl p-2 outline-none focus:border-indigo-500 text-white w-80"
+            />
+          </div>
+        
+
+
+
+
+      {/* Table */}
+
+      <div className="
+        bg-slate-900
+        border border-slate-800
+        rounded-2xl
+        overflow-hidden
+      ">
+
+
         <table className="w-full">
 
-          <thead className="bg-slate-700">
+
+          <thead className="bg-slate-800">
+
             <tr>
-              <th className="p-3">Customer</th>
-              <th className="p-3">Pickup</th>
-              <th className="p-3">Drop</th>
-              <th className="p-3">Status</th>
-              <th className="p-3">Action</th>
+
+              <th className="p-4 text-left">
+                Customer
+              </th>
+
+              <th className="p-4 text-left">
+                Phone
+              </th>
+
+              <th className="p-4 text-left">
+                Pickup
+              </th>
+
+              <th className="p-4 text-left">
+                Drop
+              </th>
+
+              <th className="p-4 text-left">
+                Package
+              </th>
+
+              <th className="p-4 text-left">
+                Payment
+              </th>
+
+              <th className="p-4 text-left">
+                Status
+              </th>
+
             </tr>
+
           </thead>
 
+
+
           <tbody>
-            {orders.map((o) => (
-              <tr key={o._id || o.id} className="border-b border-slate-700">
 
-                <td className="p-3">{o.customerName}</td>
-                <td className="p-3">{o.pickup}</td>
-                <td className="p-3">{o.drop}</td>
-                <td className="p-3">{o.status}</td>
 
-                <td className="p-3">
-                  <button
-                    onClick={() => handleEdit(o)}
-                    className="bg-green-500 px-3 py-1 mr-2"
-                  >
-                    Edit
-                  </button>
+          {filteredOrders.length === 0 ? (
 
-                  <button
-                    onClick={() => handleDelete(o._id || o.id)}
-                    className="bg-red-500 px-3 py-1"
-                  >
-                    Delete
-                  </button>
+            <tr>
+              <td
+                colSpan="7"
+                className="p-8 text-center text-slate-400"
+              >
+                No orders found
+              </td>
+            </tr>
+
+
+          ) : (
+
+
+            filteredOrders.map((order) => (
+
+              <tr
+                key={order._id}
+                className="
+                  border-t
+                  border-slate-800
+                  hover:bg-slate-800
+                "
+              >
+
+
+                <td className="p-4">
+                  {order.customerName}
                 </td>
 
+
+                <td className="p-4">
+                  {order.customerPhone || order.phone}
+                </td>
+
+
+                <td className="p-4">
+                  {order.pickupLocation}
+                </td>
+
+
+                <td className="p-4">
+                  {order.dropLocation}
+                </td>
+
+
+                <td className="p-4">
+                  {order.packageType}
+                </td>
+
+
+                <td className="p-4">
+                  {order.paymentMethod}
+                </td>
+
+
+
+                <td className="p-4">
+
+
+                  <span className="
+                    px-3
+                    py-1
+                    rounded-full
+                    bg-yellow-500/20
+                    text-yellow-400
+                  ">
+
+                    {order.status || "Pending"}
+
+                  </span>
+
+
+                </td>
+
+
               </tr>
-            ))}
+
+            ))
+
+          )}
+
+
           </tbody>
 
+
         </table>
+
+
       </div>
+
 
     </div>
   );
-}
+};
+
 
 export default OrdersManagement;

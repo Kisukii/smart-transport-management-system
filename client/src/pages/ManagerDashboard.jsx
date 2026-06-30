@@ -1,143 +1,184 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import DriverManagement from "./DriverManagement";
-import VehicleManagement from "./VehicleManagement";
-import OrdersManagement from "./OrdersManagement";
-import VehicleTracking from "./VehicleTracking";
-import NewOrder from "./NewOrder";
-import ReportsAnalytics from "./ReportsAnalytics";
+import axios from "axios";
 
 export default function ManagerDashboard() {
   const navigate = useNavigate();
-  const [activePage, setActivePage] = useState("dashboard");
-
-  if (activePage === "drivers") return <DriverManagement goBack={() => setActivePage("dashboard")} />;
-  if (activePage === "vehicles") return <VehicleManagement goBack={() => setActivePage("dashboard")} />;
-  if (activePage === "orders") return <OrdersManagement goBack={() => setActivePage("dashboard")} />;
-  if (activePage === "tracking") return <VehicleTracking goBack={() => setActivePage("dashboard")} />;
-  if (activePage === "neworder") return <NewOrder goBack={() => setActivePage("dashboard")} />;
-  if (activePage === "reports") return <ReportsAnalytics goBack={() => setActivePage("dashboard")} />;
+  const [stats, setStats] = useState({
+    shipments: 0,
+    vehicles: 0,
+    drivers: 0,
+    pendingRequests: 0,
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("role");
+    localStorage.removeItem("user");
     navigate("/");
   };
 
+  useEffect(() => {
+    const loadCounts = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const headers = token
+          ? { Authorization: `Bearer ${token}` }
+          : {};
+
+        const [ordersRes, requestsRes, driversRes, vehiclesRes] =
+          await Promise.all([
+            axios
+              .get("http://localhost:5000/api/orders", { headers })
+              .catch(() => ({ data: [] })),
+            axios
+              .get("http://localhost:5000/api/orderrequests", { headers })
+              .catch(() => ({ data: [] })),
+            axios
+              .get("http://localhost:5000/api/drivers", { headers })
+              .catch(() => ({ data: [] })),
+            axios
+              .get("http://localhost:5000/api/vehicles", { headers })
+              .catch(() => ({ data: [] })),
+          ]);
+
+        const orders = Array.isArray(ordersRes.data)
+          ? ordersRes.data
+          : ordersRes.data.orders || ordersRes.data.data || [];
+        const requests = Array.isArray(requestsRes.data)
+          ? requestsRes.data
+          : requestsRes.data.requests || requestsRes.data.data || [];
+        const drivers = Array.isArray(driversRes.data)
+          ? driversRes.data
+          : driversRes.data.drivers || driversRes.data.data || [];
+        const vehicles = Array.isArray(vehiclesRes.data)
+          ? vehiclesRes.data
+          : vehiclesRes.data.vehicles || vehiclesRes.data.data || [];
+
+        const activeVehicleCount = vehicles.filter((vehicle) => {
+          const status = (vehicle.status || "").toLowerCase();
+          return status === "available" || status === "active" || !status;
+        }).length;
+
+        const pendingRequestCount = requests.filter(
+          (request) =>
+            (request.status || "Pending").toLowerCase() === "pending"
+        ).length;
+
+        setStats({
+          shipments: orders.length,
+          vehicles: activeVehicleCount,
+          drivers: drivers.length,
+          pendingRequests: pendingRequestCount,
+        });
+      } catch (err) {
+        console.error(err);
+        setError(err.response?.data?.message || err.message || "Unable to load dashboard stats.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCounts();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white text-2xl">
+        Loading dashboard...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white text-2xl">
+        Error: {error}
+      </div>
+    );
+  }
+
   return (
-    <div className="flex h-screen bg-[#0f172a] text-white">
-      <div className="w-64 bg-[#1e293b] p-6">
-        <h1 className="text-2xl font-bold mb-10">🚛 Transport Manager Panel</h1>
+    <>
+      <div className="mb-8 bg-gradient-to-r from-indigo-600 to-purple-700 rounded-3xl p-8 shadow-2xl flex items-start justify-between">
+        <div>
+          <h1 className="text-4xl font-bold text-white">👨‍💼 Manager Dashboard</h1>
 
-        <ul className="space-y-5 text-lg">
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => setActivePage("dashboard")}>
-            Dashboard
-          </li>
-
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => setActivePage("neworder")}>
-            New Transport Request
-          </li>
-
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => navigate("/order-requests")}>
-            Order Requests
-          </li>
-
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => navigate("/assign-order/ORD001")}>
-            Assign Order
-          </li>
-
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => setActivePage("orders")}>
-            All Shipments
-          </li>
-
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => setActivePage("tracking")}>
-            Vehicle Tracking
-          </li>
-
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => setActivePage("vehicles")}>
-            Fleet Management
-          </li>
-
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => setActivePage("drivers")}>
-            Driver Management
-          </li>
-
-          <li className="cursor-pointer hover:text-cyan-400" onClick={() => setActivePage("reports")}>
-            Reports & Analytics
-          </li>
-
-          <li className="cursor-pointer hover:text-cyan-400">Settings</li>
-
-          <li onClick={handleLogout} className="cursor-pointer text-red-400 hover:text-red-300">
-            Logout
-          </li>
-        </ul>
-      </div>
-
-      <div className="flex-1 p-8">
-        <h1 className="text-4xl font-bold mb-8">👨‍💼 Manager Dashboard</h1>
-
-        <div className="grid grid-cols-4 gap-5">
-          <div className="bg-[#1e293b] p-5 rounded-2xl hover:scale-105 transition">
-            <h2>Total Shipments</h2>
-            <p className="text-3xl font-bold mt-2">128</p>
-          </div>
-
-          <div className="bg-[#1e293b] p-5 rounded-2xl hover:scale-105 transition">
-            <h2>Active Vehicles</h2>
-            <p className="text-3xl font-bold mt-2">42</p>
-          </div>
-
-          <div className="bg-[#1e293b] p-5 rounded-2xl hover:scale-105 transition">
-            <h2>Active Drivers</h2>
-            <p className="text-3xl font-bold mt-2">18</p>
-          </div>
-
-          <div className="bg-[#1e293b] p-5 rounded-2xl hover:scale-105 transition">
-            <h2>Pending Requests</h2>
-            <p className="text-3xl font-bold mt-2">7</p>
-          </div>
+          <p className="text-cyan-100 mt-2">
+            Monitor shipments, assign drivers, manage vehicles and oversee
+            transport operations.
+          </p>
         </div>
 
-        <div className="mt-10">
-          <h2 className="text-2xl font-semibold mb-5">Quick Actions</h2>
+        
+      </div>
 
-          <div className="flex flex-wrap gap-4">
-            <button onClick={() => setActivePage("neworder")} className="bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded-xl">
-              ➕ New Request
-            </button>
+      {/* Dashboard Cards */}
 
-            <button onClick={() => navigate("/order-requests")} className="bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded-xl">
-              Order Requests
-            </button>
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
 
-            <button onClick={() => navigate("/assign-order/ORD001")} className="bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded-xl">
-              Assign Order
-            </button>
+        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:scale-105 transition">
+          <p className="text-slate-400">Total Shipments</p>
+          <h2 className="text-4xl font-bold mt-3">{stats.shipments}</h2>
+        </div>
 
-            <button onClick={() => setActivePage("orders")} className="bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded-xl">
-              📦 View Shipments
-            </button>
+        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:scale-105 transition">
+          <p className="text-slate-400">Active Vehicles</p>
+          <h2 className="text-4xl font-bold mt-3 text-green-400">{stats.vehicles}</h2>
+        </div>
 
-            <button onClick={() => setActivePage("drivers")} className="bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded-xl">
-              👨‍✈️ Driver Management
-            </button>
+        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:scale-105 transition">
+          <p className="text-slate-400">Active Drivers</p>
+          <h2 className="text-4xl font-bold mt-3 text-cyan-400">{stats.drivers}</h2>
+        </div>
 
-            <button onClick={() => setActivePage("reports")} className="bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded-xl">
-              📊 Reports
-            </button>
+        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl hover:scale-105 transition">
+          <p className="text-slate-400">Pending Requests</p>
+          <h2 className="text-4xl font-bold mt-3 text-yellow-400">{stats.pendingRequests}</h2>
+        </div>
 
-            <button onClick={() => setActivePage("vehicles")} className="bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded-xl">
-              🚚 Fleet Management
-            </button>
+      </div>
 
-            <button onClick={() => setActivePage("tracking")} className="bg-cyan-600 hover:bg-cyan-700 px-6 py-3 rounded-xl">
-              📍 Vehicle Tracking
-            </button>
-          </div>
+      {/* Quick Actions */}
+
+      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl">
+        <h2 className="text-2xl font-bold mb-6">
+          Quick Actions
+        </h2>
+
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+
+          
+
+          
+          
+          <button
+            onClick={() => navigate("/manager/orders")}
+            className= "bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl"
+          >
+            📦 View Shipments
+          </button>
+
+          
+          
+
+          <button
+            onClick={() => navigate("/manager/tracking")}
+            className=" bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl"
+          >
+            📍 Vehicle Tracking
+          </button>
+
+          <button
+            onClick={() => navigate("/manager/reports")}
+            className=" bg-slate-800 hover:bg-indigo-600 p-4 rounded-2xl"
+          >
+            📊 Reports
+          </button>
+
         </div>
       </div>
-    </div>
+    </>
   );
 }
