@@ -57,7 +57,7 @@ function App() {
 
       <Route path="/manager" element={<ManagerLayout />}>
         <Route index element={<ManagerDashboard />} />
-
+         <Route path="/manager/profile" element={<Profile />} /> 
         <Route path="new-order" element={<NewOrder />} />
         <Route path="order-requests" element={<OrderRequests />} />
         <Route path="assign-order" element={<AssignOrder />} />

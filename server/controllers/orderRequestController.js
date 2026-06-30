@@ -117,7 +117,73 @@ const assignOrder = async (req, res) => {
     });
   }
 };
+// Driver Accept Order
+const acceptOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
 
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found",
+      });
+    }
+
+    // Only assigned driver can accept
+    if (order.driver.toString() !== req.user.id) {
+      return res.status(403).json({
+        message: "Not authorized",
+      });
+    }
+
+    order.status = "Accepted";
+    await order.save();
+
+    res.json({
+      message: "Order accepted",
+      order,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+// Driver Reject Order
+const rejectOrder = async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({
+        message: "Order not found",
+      });
+    }
+
+    if (order.driver.toString() !== req.user.id) {
+      return res.status(403).json({
+        message: "Not authorized",
+      });
+    }
+
+    order.status = "Rejected";
+
+    // Optional: remove assignment
+    order.driver = null;
+    order.vehicle = null;
+
+    await order.save();
+
+    res.json({
+      message: "Order rejected",
+      order,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 module.exports = {
   createOrderRequest,
   getAllRequests,
