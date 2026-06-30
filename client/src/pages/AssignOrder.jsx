@@ -21,7 +21,7 @@ const AssignOrder = () => {
         const token = localStorage.getItem("token");
 
         const [reqRes, drvRes, vehRes] = await Promise.all([
-          axios.get("http://localhost:5000/api/orderrequests", {
+          axios.get("http://localhost:5000/api/orderrequests/approved", {
             headers: { Authorization: `Bearer ${token}` },
           }).catch(() => ({ data: [] })),
           axios.get("http://localhost:5000/api/drivers", {
@@ -68,7 +68,7 @@ const AssignOrder = () => {
       );
 
       alert(res.data?.message || "Order assigned successfully");
-      navigate("/order-requests");
+      navigate("/manager/order-requests");
     } catch (err) {
       console.error("Assign error:", err.response?.data || err.message);
       alert(err.response?.data?.message || "Failed to assign order");
@@ -83,7 +83,7 @@ const AssignOrder = () => {
     <div className="min-h-screen bg-slate-950 text-white">
       <main className="p-8">
         <button
-          onClick={() => navigate("/order-requests")}
+          onClick={() => navigate("/manager/order-requests")}
           className="mb-6 bg-slate-800 hover:bg-indigo-600 px-5 py-3 rounded-xl"
         >
           Back to Order Requests
