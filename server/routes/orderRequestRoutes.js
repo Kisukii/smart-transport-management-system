@@ -4,8 +4,11 @@ const router = express.Router();
 const {
   createOrderRequest,
   getAllRequests,
+  getApprovedRequests,
   getMyRequests,
   assignOrder,
+  approveOrderRequest,
+  rejectOrderRequest,
 } = require("../controllers/orderRequestController");
 
 const {
@@ -36,6 +39,13 @@ router.get(
   authorize("manager", "admin"),
   getAllRequests
 );
+// Manager/Admin view approved requests
+router.get(
+  "/approved",
+  protect,
+  authorize("manager", "admin"),
+  getApprovedRequests
+);
 
 // Assign Driver + Vehicle
 router.post(
@@ -43,6 +53,22 @@ router.post(
   protect,
   authorize("manager", "admin"),
   assignOrder
+);
+
+// Approve order request
+router.post(
+  "/:id/approve",
+  protect,
+  authorize("manager", "admin"),
+  approveOrderRequest
+);
+
+// Reject order request
+router.post(
+  "/:id/reject",
+  protect,
+  authorize("manager", "admin"),
+  rejectOrderRequest
 );
 
 module.exports = router;
