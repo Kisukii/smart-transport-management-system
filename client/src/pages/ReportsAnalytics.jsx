@@ -31,7 +31,7 @@ function ReportsAnalytics({ goBack }) {
       try {
         const [reqRes, ordRes, vehRes, drvRes] = await Promise.all([
           axios
-            .get("http://localhost:5000/api/orderrequests/my", {
+            .get("http://localhost:5000/api/orderrequests", {
               headers: { Authorization: `Bearer ${token}` },
             })
             .catch(() => ({ data: [] })),

@@ -35,17 +35,7 @@ const ManagerLayout = () => {
           >
             Dashboard
           </button>
-          <button
-            onClick={() => navigate("/manager/new-order")}
-            className={`w-full text-left p-3 rounded-xl transition-colors ${
-              location.pathname === "/manager/new-order"
-                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-950/40 font-medium"
-                : "text-slate-300 hover:bg-slate-800 hover:text-white"
-            }`}
-          >
-            New Transportation Request
-          </button>
-
+          
           
           
 
@@ -99,16 +89,6 @@ const ManagerLayout = () => {
           </button>
          
 
-           <button
-            onClick={() => navigate("/manager/settings")}
-            className={`w-full text-left p-3 rounded-xl transition-colors ${
-              location.pathname === "/manager/settings"
-                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-950/40 font-medium"
-                : "text-slate-300 hover:bg-slate-800 hover:text-white"
-            }`}
-          >
-            Settings
-          </button>
           
           
         </nav>
