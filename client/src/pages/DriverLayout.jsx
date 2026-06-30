@@ -50,10 +50,10 @@ const DriverLayout = () => {
           </button>
 
           <button
-            onClick={() => navigate("/vehiclestatus")}
+            onClick={() => navigate("/driverstatus")}
             className="w-full text-left hover:bg-slate-800 p-3 rounded-xl"
           >
-            Vehicle Status
+            Driver Status
           </button>
 
           <button

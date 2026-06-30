@@ -22,7 +22,7 @@ import DriverNotifications from "./pages/DriverNotifications";
 import MyDeliveries from "./pages/MyDeliveries";
 import VehicleIssueReport from "./pages/VehicleIssueReport";
 import RouteNavigation from "./pages/RouteNavigation";
-import VehicleStatus from "./pages/VehicleStatus";
+import DriverStatus from "./pages/DriverStatus";
 import NewOrderRequests from "./pages/NewOrderRequests";
 import DriverDashboard from "./pages/DriverDashboard";
 import UserDashboard from "./pages/UserDashboard";
@@ -75,7 +75,7 @@ function App() {
         <Route path="/driver/profile" element={<Profile />} />
         <Route path="/driverdeliveries" element={<MyDeliveries />} />
         <Route path="/navigation" element={<RouteNavigation />} />
-        <Route path="/vehiclestatus" element={<VehicleStatus />} />
+        <Route path="/driverstatus" element={<DriverStatus />} />
         <Route path="/report-issue" element={<VehicleIssueReport />} />
         <Route path="/drivernotifications" element={<DriverNotifications />} />
  
