@@ -74,16 +74,7 @@ const linkStyle = {
             Profile
           </button>
  
-          <button
-            onClick={() => navigate("/user/notifications")}
-            className={`w-full text-left p-3 rounded-xl transition-colors ${
-              location.pathname === "/user/notifications"
-                ? "bg-indigo-600 text-white shadow-lg shadow-indigo-950/40 font-medium"
-                : "text-slate-300 hover:bg-slate-800 hover:text-white"
-            }`}
-          >
-            Notifications
-          </button>
+         
           </nav>
         {/* </nav>
         <NavLink to="/user" className={linkStyle}>Dashboard</NavLink>

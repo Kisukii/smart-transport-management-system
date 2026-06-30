@@ -101,7 +101,7 @@ export default function ManagerDashboard() {
 
   return (
     <>
-      <div className="mb-8 bg-gradient-to-r from-indigo-600 to-purple-700 rounded-3xl p-8 shadow-2xl flex items-start justify-between">
+      <div className="mb-8 bg-linear-to-r from-indigo-600 to-purple-700 rounded-3xl p-8 shadow-2xl flex items-start justify-between">
         <div>
           <h1 className="text-4xl font-bold text-white">👨‍💼 Manager Dashboard</h1>
 

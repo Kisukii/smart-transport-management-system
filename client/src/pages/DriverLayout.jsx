@@ -33,16 +33,75 @@ const DriverLayout = () => {
         <h1 className="text-2xl font-bold mb-10 tracking-tight">
           🚚 Driver Panel 
         </h1>
+
  
-        <nav className="space-y-2">
-          {navItem("/driver", "Dashboard")}
-          {navItem("/driver/new-orders", "New Order Requests")}
-          {navItem("/driverdeliveries", "My Deliveries")}
-          {navItem("/navigation", "Route Navigation")}
-          {navItem("/vehiclestatus", "Vehicle Status")}
-          {navItem("/report-issue", "Vehicle Issue Report")}
-          {/* {navItem("/drivernotifications", "Notifications")} */}
-          {navItem("/driver/profile", "Driver Profile")}
+         <nav className="space-y-2">
+           {navItem("/driver/new-orders", "New Order Requests")}
+           {navItem("/driverdeliveries", "My Deliveries")}
+           {navItem("/navigation", "Route Navigation")}
+           {navItem("/driverstatus", "Driver Status")} 
+        {navItem("/driver/profile", "Driver Profile")}
+
+
+        {/* <nav className="space-y-3">
+
+          <button
+            onClick={() => navigate("/driver-dashboard")}
+            className="w-full text-left hover:bg-slate-800 p-3 rounded-xl"
+          >
+            Dashboard
+          </button>
+
+          <button
+            onClick={() => navigate("/driver/new-orders")}
+            className="w-full text-left hover:bg-slate-800 p-3 rounded-xl"
+          >
+            New Order Requests
+          </button>
+
+          <button
+            onClick={() => navigate("/driverdeliveries")}
+            className="w-full text-left hover:bg-slate-800 p-3 rounded-xl"
+          >
+            My Deliveries
+          </button>
+
+          <button
+            onClick={() => navigate("/navigation")}
+            className="w-full text-left hover:bg-slate-800 p-3 rounded-xl"
+          >
+            Route Navigation
+          </button>
+
+          <button
+            onClick={() => navigate("/driverstatus")}
+            className="w-full text-left hover:bg-slate-800 p-3 rounded-xl"
+          >
+            Driver Status
+          </button>
+
+          <button
+            onClick={() => navigate("/report-issue")}
+            className="w-full text-left hover:bg-slate-800 p-3 rounded-xl"
+          >
+            Vehicle Issue Report
+          </button>
+
+          {/* <button
+            onClick={() => navigate("/drivernotifications")}
+            className="w-full text-left hover:bg-slate-800 p-3 rounded-xl"
+          >
+            Notifications
+          </button> */}
+
+          {/* <button
+            onClick={() => navigate("/profile")}
+            className="w-full text-left hover:bg-slate-800 p-3 rounded-xl"
+          >
+            Driver Profile
+          </button>
+ */} 
+
         </nav>
  
         <button

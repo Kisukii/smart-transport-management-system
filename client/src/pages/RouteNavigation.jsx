@@ -1,8 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom";
 
+
 const RouteNavigation = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  
 
   const routeData = location.state || {
     orderId: "ORD001",
@@ -23,6 +26,8 @@ const RouteNavigation = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 text-white">
+
+
       <main className="p-8">
         <button
           onClick={() => navigate("/driverdeliveries")}

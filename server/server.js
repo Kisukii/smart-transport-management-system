@@ -22,7 +22,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/profile", profileRoutes);
 app.use("/api/orderrequests", orderRequestRoutes);
-app.use("/api/user", customerRoutes);
+app.use("/api/customers", customerRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/drivers", driverRoutes);

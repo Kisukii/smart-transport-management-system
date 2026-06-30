@@ -1,6 +1,7 @@
 const OrderRequest = require("../models/orderRequestModel");
 const Order = require("../models/orderModel");
 
+// Customer creates order request
 const createOrderRequest = async (req, res) => {
   try {
     const {
@@ -44,9 +45,12 @@ const createOrderRequest = async (req, res) => {
   }
 };
 
+// Manager/Admin view pending requests
 const getAllRequests = async (req, res) => {
   try {
-    const requests = await OrderRequest.find({ status: "Pending" })
+    const requests = await OrderRequest.find({
+      status: "Pending",
+    })
       .populate("customer", "name email")
       .sort({ createdAt: -1 });
 
@@ -58,6 +62,24 @@ const getAllRequests = async (req, res) => {
   }
 };
 
+// Manager/Admin view approved requests
+const getApprovedRequests = async (req, res) => {
+  try {
+    const requests = await OrderRequest.find({
+      status: "Approved",
+    })
+      .populate("customer", "name email")
+      .sort({ createdAt: -1 });
+
+    res.json(requests);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+// Customer views own requests
 const getMyRequests = async (req, res) => {
   try {
     const requests = await OrderRequest.find({
@@ -72,6 +94,57 @@ const getMyRequests = async (req, res) => {
   }
 };
 
+// Manager approves request
+const approveOrderRequest = async (req, res) => {
+  try {
+    const request = await OrderRequest.findById(req.params.id);
+
+    if (!request) {
+      return res.status(404).json({
+        message: "Order request not found",
+      });
+    }
+
+    request.status = "Approved";
+    await request.save();
+
+    res.json({
+      message: "Order request approved successfully",
+      request,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+// Manager rejects request
+const rejectOrderRequest = async (req, res) => {
+  try {
+    const request = await OrderRequest.findById(req.params.id);
+
+    if (!request) {
+      return res.status(404).json({
+        message: "Order request not found",
+      });
+    }
+
+    request.status = "Rejected";
+    await request.save();
+
+    res.json({
+      message: "Order request rejected successfully",
+      request,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+// Manager assigns driver & vehicle
 const assignOrder = async (req, res) => {
   try {
     const { driver, vehicle } = req.body;
@@ -97,14 +170,12 @@ const assignOrder = async (req, res) => {
       packageWeight: request.packageWeight,
       paymentMethod: request.paymentMethod,
       instructions: request.instructions,
-
       driver,
       vehicle,
-
       status: "Assigned",
     });
 
-    request.status = "Approved";
+    request.status = "Assigned";
     await request.save();
 
     res.status(200).json({
@@ -117,7 +188,8 @@ const assignOrder = async (req, res) => {
     });
   }
 };
-// Driver Accept Order
+
+// Driver accepts assigned order
 const acceptOrder = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -128,7 +200,6 @@ const acceptOrder = async (req, res) => {
       });
     }
 
-    // Only assigned driver can accept
     if (order.driver.toString() !== req.user.id) {
       return res.status(403).json({
         message: "Not authorized",
@@ -149,7 +220,7 @@ const acceptOrder = async (req, res) => {
   }
 };
 
-// Driver Reject Order
+// Driver rejects assigned order
 const rejectOrder = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -167,8 +238,6 @@ const rejectOrder = async (req, res) => {
     }
 
     order.status = "Rejected";
-
-    // Optional: remove assignment
     order.driver = null;
     order.vehicle = null;
 
@@ -184,9 +253,15 @@ const rejectOrder = async (req, res) => {
     });
   }
 };
+
 module.exports = {
   createOrderRequest,
   getAllRequests,
+  getApprovedRequests,
   getMyRequests,
+  approveOrderRequest,
+  rejectOrderRequest,
   assignOrder,
+  acceptOrder,
+  rejectOrder,
 };
