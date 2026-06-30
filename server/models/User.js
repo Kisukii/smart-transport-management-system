@@ -32,6 +32,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       unique: true,
       sparse: true,
+    },
+    status: {
+      type: String,
+      enum: ["Available", "Busy", "On Leave"],
+      default: "Available",
     }
 },
 {

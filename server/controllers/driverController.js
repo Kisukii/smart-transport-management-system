@@ -17,6 +17,13 @@ exports.getDrivers = async (req, res) => {
           User.updateOne({ _id: driver._id }, { driverId: newDriverId })
         );
       }
+
+      if (!driver.status) {
+        driver.status = "Available";
+        updates.push(
+          User.updateOne({ _id: driver._id }, { status: "Available" })
+        );
+      }
     });
 
     if (updates.length > 0) {

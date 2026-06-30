@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function CustomerManagement({ goBack }) {
+function CustomerManagement() {
+  const navigate = useNavigate();
   const [customers, setCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -38,7 +40,7 @@ function CustomerManagement({ goBack }) {
     <div className="min-h-screen bg-[#0f172a] text-white p-8">
 
       <button
-        onClick={goBack}
+        onClick={() => navigate(-1)}
         className="mb-6 bg-slate-700 hover:bg-slate-600 px-4 py-2 rounded-lg"
       >
         ← Back to Dashboard

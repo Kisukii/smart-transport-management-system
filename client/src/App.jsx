@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminLayout from "./pages/AdminLayout"
 import Profile from "./pages/Profile";
 
 import ManagerDashboard from "./pages/ManagerDashboard";
@@ -14,6 +15,7 @@ import VehicleManagement from "./pages/VehicleManagement";
 import VehicleTracking from "./pages/VehicleTracking";
 import NewOrder from "./pages/NewOrder";
 import MyOrders from "./pages/MyOrders";
+import CustomerManagement from "./pages/CustomerManagement";
 
 
 import DriverNotifications from "./pages/DriverNotifications";
@@ -42,8 +44,16 @@ function App() {
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/admin" element={<AdminDashboard />} />
-     <Route path="/profile" element={<Profile />} /> 
+      
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<AdminDashboard />} />
+        <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="drivers" element={<DriverManagement />} />
+        <Route path="vehicles" element={<VehicleManagement />} />
+        <Route path="orders" element={<OrdersManagement />} />
+        <Route path="customers" element={<CustomerManagement />} />
+      </Route>
 
       <Route path="/manager" element={<ManagerLayout />}>
         <Route index element={<ManagerDashboard />} />

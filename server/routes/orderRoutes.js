@@ -39,7 +39,7 @@ router.get(
 router.get(
   "/",
   protect,
-  authorize("user", "manager", "driver"),
+  authorize("user", "manager", "driver", "admin"),
   getOrders
 );
 
