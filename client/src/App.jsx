@@ -16,7 +16,7 @@ import NewOrder from "./pages/NewOrder";
 import MyOrders from "./pages/MyOrders";
 
 
-import DriverNotifications from "./pages/DriverNotifications";
+// import DriverNotifications from "./pages/DriverNotifications";
 import MyDeliveries from "./pages/MyDeliveries";
 import VehicleIssueReport from "./pages/VehicleIssueReport";
 import RouteNavigation from "./pages/RouteNavigation";
@@ -61,13 +61,13 @@ function App() {
 
         <Route path="/driver" element={<DriverLayout />} />
          <Route path="/driver-dashboard" element={<DriverDashboard />} />
-        <Route path="/driver/new-orders" element={<NewOrderRequests />} />
+         <Route path="/driver/new-orders" element={<NewOrderRequests />} />
         <Route path="/driver/profile" element={<Profile />} />
         <Route path="/driverdeliveries" element={<MyDeliveries />} />
         <Route path="/navigation" element={<RouteNavigation />} />
         <Route path="/vehiclestatus" element={<VehicleStatus />} />
         <Route path="/report-issue" element={<VehicleIssueReport />} />
-        <Route path="/drivernotifications" element={<DriverNotifications />} />
+        {/* <Route path="/drivernotifications" element={<DriverNotifications />} /> */}
  
 
       <Route element={<UserLayout />}>
